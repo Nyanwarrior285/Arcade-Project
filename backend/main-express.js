@@ -1,5 +1,5 @@
 const express = require("express");
-const Song = require("./model.js");
+const Scores = require("./model.js");
 const mongoose = require("mongoose");
 
 const PORT = 3000;

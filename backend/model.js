@@ -1,28 +1,24 @@
 const mongoose = require("mongoose");
 
-const songSchema = new mongoose.Schema({
-    title: {
+const scoreSchema = new mongoose.Schema({
+    game: {
         type: String,
         required: true,
     },
-    artist: {
+    name: {
         type: String,
-        required: true,
+        default: "",
     },
-    genre: {
-        type: String,
-        required: false,
-    },
-    streams: {
+    score: {
         type: Number,
-        default: 0,
+        required: true,
     },
 });
 
-const Song = mongoose.model("Song", songSchema);
+const Scores = mongoose.model("Scores", scoreSchema);
 
 mongoose.connect(
-    "mongodb+srv://Bradley:ILikeMe1!@cluster0.pqxkiyk.mongodb.net/songs-list?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://Bradley:ILikeMe1!@cluster0.pqxkiyk.mongodb.net/Arcade?retryWrites=true&w=majority&appName=Cluster0"
 );
 
-module.exports = Song;
+module.exports = Scores;
