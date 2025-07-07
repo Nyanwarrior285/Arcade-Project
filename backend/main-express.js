@@ -1,5 +1,5 @@
 const express = require("express");
-const Scores = require("./model.js");
+const Score = require("./model.js");
 const mongoose = require("mongoose");
 
 const PORT = 3000;
@@ -7,14 +7,14 @@ const PORT = 3000;
 function main() {
     const app = express();
 
-    app.get("/songs-list", async (req,res) => {
-        const result = await Song.find({});
+    app.get("/scores", async (req,res) => {
+        const result = await Score.find({});
         res.json(result);
     });
 
-    app.get("/songs-list/:id", async (req,res) => {
+    app.get("/scores/:id", async (req,res) => {
         const object_id = new mongoose.Types.ObjectId(req.params.id);
-        const result = await Song.findById(object_id)
+        const result = await Score.findById(object_id)
         if (result) {
             res.json(result);
         } else {
@@ -22,8 +22,8 @@ function main() {
         }
     });
 
-    app.post("/songs-list", express.json(), async (req, res) => {
-        const result = await Song.create(req.body);
+    app.post("/scores", express.json(), async (req, res) => {
+        const result = await Score.create(req.body);
         if (result) {
             res.json(result);
         } else {
