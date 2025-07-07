@@ -1,50 +1,48 @@
 <script setup>
-import { ref } from 'vue';
-let name = ref("User");
-let new_name = ref("");
+import { ref } from "vue";
+import Snake from "./components/Snake.vue"
+import MineSweeper from "./components/MineSweeper.vue"
 
-function rename() {
-  name.value = new_name.value;
-  new_name.value = "";
-}
+const activePage = ref("home");
 
-const colors = ["aqua", "blueviolet", "fuchsia"]
-
-function recolor(color) {
-  document.bgColor = color
+function navigateTo(page) {
+    activePage.value = page;
 }
 </script>
 
 <template>
-  <div class="container">
-    <p>Welcome {{name}}!</p>
-    <input v-model="new_name" placeholder="Your name..." style="margin: 5px;">
-    <button v-on:click="rename">Enter</button>
-    <div style="flex-direction: row;">
-      <button v-for="color in colors" v-on:click="recolor(color)" class="color-button" :style="{backgroundColor: color}">{{ color }}</button>
-      <!-- <button v-on:click="recolor" style="box-sizing: 1rem; background-color: blueviolet;">{{ colors[1] }}</button>
-      <button v-on:click="recolor" style="box-sizing: 1rem; background-color: fuchsia;">{{ colors[2] }}</button> -->
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a @click="navigateTo('home')">Home</a></li>
+                <li><a @click="navigateTo('snake')">Snake</a></li>
+                <li><a @click="navigateTo('minesweeper')">MineSweeper</a></li>
+            </ul>
+        </nav>
+        <MyComponent />
+        <div v-if="activePage == 'home'" title="Hello World"></div>
+        <Snake v-if="activePage == 'snake'" />
+        <MineSweeper v-if="activePage == 'minesweeper'" />
     </div>
-  </div>
 </template>
 
 <style scoped>
 p {
-  font-size: 20px;
-  color: #333;
+    font-size: 20px;
+    color: #333;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 .color-button{
-  height: 100px;
-  width: 100px;
-  margin: 5px;
+    height: 100px;
+    width: 100px;
+    margin: 5px;
 }
 </style>
