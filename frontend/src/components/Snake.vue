@@ -53,7 +53,7 @@ function moveSnake() {
         loseSnake();
         return;
     } else {
-        if (board.value[headPosition.value.y][headPosition.value.x].type === "apple") {
+        if (headPosition.value.x == applePosition.value.x && headPosition.value.y == applePosition.value.y) {
             bodyMaxLength.value += 2;
             createApple();
         }
@@ -87,16 +87,29 @@ function changeDirection(event) {
 }
 
 function createApple() {
-
+    const availableCells = [];
+    for (let r = 0; r < board.value.length; r++) {
+        for (let c = 0; c < board.value[r].length; c++) {
+            if (board.value[r][c].type === "none") {
+                availableCells.push(board.value[r][c]);
+            }
+        }
+    }
+    const newApple = availableCells[Math.floor(Math.random()*availableCells.length)];
+    applePosition.value.x = newApple.x;
+    applePosition.value.y = newApple.y;
+    newApple.type = "apple";
 }
 
 function loseSnake() {
     console.log(bodyPosition.value.length);
     loseGame.value = true;
-
+    alert("You got " + (bodyPosition.value.length**2 * 10) + " score!")
 }
 
 </script>
+
+
 <template>
     <div class="snake-container" tabindex="0" v-on:keydown="changeDirection">
         <div class="snake-col">
@@ -112,6 +125,8 @@ function loseSnake() {
         <button v-on:click="moveSnake" style="align-self: center;">Move snake forward one step</button>
     </div>
 </template>
+
+
 <style scoped>
 .snake-container {
     display: flex;

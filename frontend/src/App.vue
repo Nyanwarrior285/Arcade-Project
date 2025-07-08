@@ -19,7 +19,7 @@ function navigateTo(page) {
                 <li><a @click="navigateTo('minesweeper')">MineSweeper</a></li>
             </ul>
         </nav>
-        <div v-if="activePage == 'home'" title="Hello World"></div>
+        <div v-if="activePage == 'home'">Hello World</div>
         <Snake v-if="activePage == 'snake'" />
         <MineSweeper v-if="activePage == 'minesweeper'" />
     </div>
@@ -36,7 +36,7 @@ p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 95vh;
 }
 
 .color-button{
