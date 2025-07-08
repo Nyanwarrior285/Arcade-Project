@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import Snake from "./components/Snake.vue"
-import MineSweeper from "./components/Minesweeper.vue"
+import MineSweeper from "./components/MineSweeper.vue"
 
 const activePage = ref("home");
 
