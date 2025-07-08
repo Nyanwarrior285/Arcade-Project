@@ -48,17 +48,17 @@ import { ref } from 'vue';
     function neiborBom (board) {
         const rows = board.length;
         const cols = rows[0].length;
-        const count = 0;
-        const nY = '';
-        const nX = '';
+        let count = 0;
+        let nY = '';
+        let nX = '';
 
-        for (r = 0; r < rows; r++) {
-            for ( c = 0; c < cols, c++; ){
+        for (let r = 0; r < rows; r++) {
+            for ( let c = 0; c < cols, c++; ){
                 if ( board[r][c].hasBom ) {
                     continue;
                 }
-                for ( dy = -1; dx <= 1; dy++) {
-                    for ( dx = -1, dy <= 1; dx++; ) {
+                for ( let dy = -1; dx <= 1; dy++) {
+                    for ( let dx = -1; dy <= 1; dx++ ) {
                         nY = r + dy;                                // neiborY
                         nX = c + dx                                 // beiborX
                         if ( nY < rows && nY >= 0 &&
