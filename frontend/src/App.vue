@@ -19,7 +19,6 @@ function navigateTo(page) {
                 <li><a @click="navigateTo('minesweeper')">MineSweeper</a></li>
             </ul>
         </nav>
-        <MyComponent />
         <div v-if="activePage == 'home'" title="Hello World"></div>
         <Snake v-if="activePage == 'snake'" />
         <MineSweeper v-if="activePage == 'minesweeper'" />
