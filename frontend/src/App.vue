@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import Snake from "./components/Snake.vue"
-import MineSweeper from "./components/Minesweeper.vue"
+import Minesweeper from "./components/Minesweeper.vue"
 
 const activePage = ref("home");
 
 function navigateTo(page) {
+    console.log("Clicked:", page); 
     activePage.value = page;
 }
 </script>
@@ -14,14 +15,15 @@ function navigateTo(page) {
     <div class="container">
         <nav>
             <ul>
-                <li><a @click="navigateTo('home')">Home</a></li>
-                <li><a @click="navigateTo('snake')">Snake</a></li>
-                <li><a @click="navigateTo('minesweeper')">MineSweeper</a></li>
+                <li><a href="#" @click.prevent="navigateTo('home')">Home</a></li>
+                <li><a href="#" @click.prevent="navigateTo('snake')">Snake</a></li>
+                <li><a href="#" @click.prevent="navigateTo('minesweeper')">MineSweeper</a></li>
             </ul>
         </nav>
-        <div v-if="activePage == 'home'">Hello World</div>
-        <Snake v-if="activePage == 'snake'" />
-        <MineSweeper v-if="activePage == 'minesweeper'" />
+        <div v-if="activePage === 'home'" title="Hello World"></div>
+        <Snake v-if="activePage === 'snake'" />
+        <Minesweeper v-if="activePage === 'minesweeper'" />
+
     </div>
 </template>
 
@@ -36,7 +38,7 @@ p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 95vh;
+    height: 100vh;
 }
 
 .color-button{
