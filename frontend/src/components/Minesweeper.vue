@@ -47,8 +47,8 @@ import { ref } from 'vue';
 
     function neiborBom (board) {
         const rows = board.length;
-        const cols = rows[0].length;
-        let count = 0;
+        const cols = board[0].length;
+
         let nY = '';
         let nX = '';
 
@@ -57,10 +57,16 @@ import { ref } from 'vue';
                 if ( board[r][c].hasBom ) {
                     continue;
                 }
-                for ( let dy = -1; dx <= 1; dy++) {
-                    for ( let dx = -1; dy <= 1; dx++ ) {
+                let count = 0;
+                for ( let dy = -1; dy <= 1; dy++) {
+                    for ( let dx = -1; dx <= 1; dx++ ) {
+                        if (dy === 0 && dx === 0) continue;
+                        
+
                         nY = r + dy;                                // neiborY
                         nX = c + dx                                 // beiborX
+
+                        
                         if ( nY < rows && nY >= 0 &&
                              nX < cols && nX >= 0 &&
                              board[nY][nX].hasBom) {
@@ -82,21 +88,19 @@ import { ref } from 'vue';
         }          
         cell.isVisited = true;
         if ( cell.neiborsBom === 0 && !cell.hasBom ){
-            for ( let dr = -1; dr <= 1; dr++) {
-                for ( let dc = -1; dc <= 1; dc++ ) {
-
-                    const nY = row + dy;
-                    const nX = col + dx;
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    const nr = row + dr;
+                    const nc = col + dc;
 
                     if (
-                        nr >= 0 && nr < board.length &&
-                        nc >= 0 && nc < board[0].length
+                    nr >= 0 && nr < board.length &&
+                    nc >= 0 && nc < board[0].length
                     ) {
-                        visitBom(board, nY, nX);
+                    visitBom(board, nr, nc);
                     }
-                }   
+                }
             }
-
         }
     }
 
@@ -113,7 +117,7 @@ import { ref } from 'vue';
 
     function leftClickCheck( row, col ) {
         if ( ResultCheck( board.value,  row, col) ) {
-            console.log("Bomed, dead.");
+            alert("Bombed & Dead.\nYou Suck!");
             return;
         } else {
             visitBom( board.value, row, col);
@@ -123,7 +127,7 @@ import { ref } from 'vue';
 
     function rightClickFlagging( row, col ) {
         const currentCell = board.value[row][col];
-        while ( !currentCell.isVisited ) {
+        if ( !currentCell.isVisited ) {
             currentCell.isFalged = !currentCell.isFalged;                            // false->true
         }
 
@@ -144,16 +148,67 @@ import { ref } from 'vue';
 
 
 <template>
-    <div>
-        
-    </div>
+        <div class="MinesBoard" >
+            <!-- row 是当前行的数组, rowIndex is 当前行的索引  -->
+            
+            <div v-for="(row, rowIndex) in board"      
+                :key="rowIndex" 
+                class="row"
+            >
+                <div v-for="( cell, colIndex ) in row "
+                    :key="colIndex"
+                    class="cell"
+                
+                    @click="leftClickCheck(rowIndex, colIndex)" 
+                    @contextmenu.prevent="rightClickFlagging(rowIndex, colIndex)"                              
+                        :class="{ 
+                            visited: cell.isVisited, 
+                            flaged: cell.isFalged,
+                            bomed: cell.isVisited && cell.hasBom
+                        }"
+                >
+                    <div v-if="cell.isFalged">flag</div>
+                    <div v-else-if="cell.isVisited && cell.hasBom">bom</div>                    
+                    <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
+
+                </div>
+            </div>
+        </div>
 </template>
 
 
-
+//  @contextmenu.prevent="rightClickFlagging(rowIndex, colIndex)" : Run function when user right-clicks      
 <!-- ======================================================================================================================================================================== -->
 
 
 
-<style>
+<style scoped>
+.MinesBoard {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.row {
+  display: flex;
+}
+.cell {
+  width: 30px;
+  height: 30px;
+  background-color: #000000;
+  border: 1px solid #999;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.cell.visited {
+  background-color: #000000;
+}
+.cell.flaged {
+  background-color: #e5fb57;
+}
+.cell.bomed {
+  background-color: red;
+  color: white;
+}
 </style>
