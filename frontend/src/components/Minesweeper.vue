@@ -3,12 +3,12 @@ import { ref } from 'vue';
 
 // game board setup:
     const board = ref([]);
-
-    function createBoard(rows, cols) {
+    
+    function createBoard(boardSize) {
         const currentBoard = [];
-        for (let r = 0; r < rows; r++){                     // all squares in each line (outter loop)
+        for (let r = 0; r < boardSize; r++){                     // all squares in each line (outter loop)
             const row = [];                                       
-            for ( let c = 0; c < cols;  c++ ){              // 遍历当前行的每一列。c 是列索引，从 0 到 cols - 1。
+            for ( let c = 0; c < boardSize;  c++ ){              // 遍历当前行的每一列。c 是列索引，从 0 到 cols - 1。
                 
                 row.push({                                  // status of each square:
                     hasBom: false,                         // initial state: 雷都是没有被排掉的 ，如果玩家排掉了 就变成true
@@ -23,53 +23,69 @@ import { ref } from 'vue';
     }
 
     
+    
 
-// 初始时的随机放雷, 每格最多只可能放一个雷：
-    function markTheMine(board, bomCount) {
-        const rows = board.length;
-        const cols = board[0].length;
-        let marked = 0;
 
-        while ( marked < bomCount ) {
-            const r = Math.floor(Math.random() * rows);         // Math.random() * rows: randomly pick a float then x 9(rows) to get a int using math.floor()
-            const c = Math.floor(Math.random() * cols);
 
-            if ( !board[r][c].hasBom ){
-                board[r][c].hasBom = true;
-                marked ++;
-            }
+
+
+
+// 初始时的随机放雷, position 不可以重复噢。
+    function placeTheBom(board, numOfBom) {
+    const boardSize = board.length;
+    const positions = [];
+
+    while (positions.length < numOfBom) {
+        const pos = {
+            x: pickRandomNumber(boardSize),
+            y: pickRandomNumber(boardSize)
+        };
+
+        if (!positions.some(p => checkPositionMatch(p, pos))) {
+            positions.push(pos);
+            board[pos.x][pos.y].hasBom = true;
         }
     }
+}
+
+    function pickRandomNumber(size) {
+        return Math.floor( Math.random() * size );
+    }
+
+    function checkPositionMatch( c, r ){
+        return c.x === r.x && c.y === r.y;
+    }
+
 
 
 // r: y,  c: x.               
 // (  dy, dx )
 
-    function neiborBom (board) {
-        const rows = board.length;
-        const cols = board[0].length;
+    function checkNeiborBom (board) {
+        const rowLength = board.length;
+        const colLength = board[0].length;
 
-        let nY = '';
-        let nX = '';
+        let nRy = '';                                 // neibor Row ( y-value )
+        let nCx = '';
 
-        for (let r = 0; r < rows; r++) {
-            for ( let c = 0; c < cols, c++; ){
+        for (let r = 0; r < rowLength; r++) {
+            for ( let c = 0; c < colLength; c++ ){
                 if ( board[r][c].hasBom ) {
                     continue;
                 }
                 let count = 0;
-                for ( let dy = -1; dy <= 1; dy++) {
+                for ( let dy = -1; dy <= 1; dy++) {                  // dy: difference of row ( y-value )
                     for ( let dx = -1; dx <= 1; dx++ ) {
                         if (dy === 0 && dx === 0) continue;
                         
 
-                        nY = r + dy;                                // neiborY
-                        nX = c + dx                                 // beiborX
+                        nRy = r + dy;                                // neibor Row position 
+                        nCx = c + dx;                                 // neibor Col position
 
                         
-                        if ( nY < rows && nY >= 0 &&
-                             nX < cols && nX >= 0 &&
-                             board[nY][nX].hasBom) {
+                        if ( nRy< rowLength && nRy >= 0 &&
+                             nCx < colLength && nCx >= 0 &&
+                             board[nRy][nCx].hasBom) {
                                 count++;
                              }
                     }
@@ -81,16 +97,21 @@ import { ref } from 'vue';
 
 //点击一个格子后进行揭示，如果是空白的（周围没有地雷），就自动展开邻居格子（递归展开）。       
     function visitBom( board, row, col){                   
-        const cell = board[row][col];                               // cell: 当前格子, current                  
+        const cell = board[row][col];                               // cell: 当前格子, current     
 
-        if ( cell.isVisited || cell.isFalged ){                       // 如果雷被玩家排掉 isVisited=true  或者 没有被 插旗子： isFalged=true , return
-            return;
-        }          
+        if (cell.hasBom) {
+            cell.isVisited = true;
+            return; 
+        }  
+        if ( cell.isVisited || cell.isFalged )                     // 如果雷被玩家排掉 isVisited=true  或者 没有被 插旗子： isFalged=true , return
+            return;      
+          
+
         cell.isVisited = true;
-        if ( cell.neiborsBom === 0 && !cell.hasBom ){
+        if ( cell.neiborsBom === 0 && cell.hasBom === false ){
             for (let dr = -1; dr <= 1; dr++) {
                 for (let dc = -1; dc <= 1; dc++) {
-                    const nr = row + dr;
+                    const nr = row + dr;      
                     const nc = col + dc;
 
                     if (
@@ -98,6 +119,7 @@ import { ref } from 'vue';
                     nc >= 0 && nc < board[0].length
                     ) {
                     visitBom(board, nr, nc);
+
                     }
                 }
             }
@@ -114,13 +136,43 @@ import { ref } from 'vue';
         // return false;
     }
 
-
+    let firstClick = true;
     function leftClickCheck( row, col ) {
+        console.log("clicked", row, col);
+        if (firstClick){
+            placeTheBomAvoidingFirstClick(board.value, 5, row, col);
+            checkNeiborBom(board.value);
+            firstClick = false;
+        }
+        console.log("First click! Placing bombs...");
         if ( ResultCheck( board.value,  row, col) ) {
             alert("Bombed & Dead.\nYou Suck!");
             return;
         } else {
             visitBom( board.value, row, col);
+        }
+    }
+
+
+    function placeTheBomAvoidingFirstClick(board, numOfBom
+    , firstClickRow, firstClickCol) {
+        const rows = board.length;
+        const cols = board[0].length;
+        let marked = 0;
+
+        while (marked < numOfBom
+
+        ) {
+            const r = Math.floor(Math.random() * rows);
+            const c = Math.floor(Math.random() * cols);
+
+            // 避免第一次点击的位置 + 已经有雷的位置
+            if ((r === firstClickRow && c === firstClickCol) || board[r][c].hasBom) {
+                continue;
+            }
+
+            board[r][c].hasBom = true;
+            marked++;
         }
     }
 
@@ -133,9 +185,9 @@ import { ref } from 'vue';
 
     }
 
-    board.value = createBoard(9, 9);
-    markTheMine(board.value, 5); 
-    neiborBom(board.value);
+    board.value = createBoard(9);
+    placeTheBom(board.value, 5); 
+    checkNeiborBom(board.value);
 
 
 
@@ -167,17 +219,17 @@ import { ref } from 'vue';
                             bomed: cell.isVisited && cell.hasBom
                         }"
                 >
-                    <div v-if="cell.isFalged">flag</div>
-                    <div v-else-if="cell.isVisited && cell.hasBom">bom</div>                    
+                    <div v-if="cell.isFalged">🚩</div>                  
                     <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
-
+                    <div v-else-if="cell.isVisited && cell.hasBom">bom</div>  
+                    <div v-else-if="cell.isVisited"> </div> 
                 </div>
             </div>
         </div>
 </template>
 
 
-//  @contextmenu.prevent="rightClickFlagging(rowIndex, colIndex)" : Run function when user right-clicks      
+<!-- //  @contextmenu.prevent="rightClickFlagging(rowIndex, colIndex)" : Run function when user right-clicks       -->
 <!-- ======================================================================================================================================================================== -->
 
 
@@ -202,7 +254,7 @@ import { ref } from 'vue';
   cursor: pointer;
 }
 .cell.visited {
-  background-color: #000000;
+  background-color: #1b85e7;
 }
 .cell.flaged {
   background-color: #e5fb57;
