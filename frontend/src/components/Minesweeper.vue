@@ -254,9 +254,9 @@ import { ref } from 'vue';
                             bomed: cell.isVisited && cell.hasBom
                         }"
                 >
-                    <div v-if="cell.isFalged">🚩</div>        
-                    <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
+                    <div v-if="cell.isFalged">🚩</div>  
                     <div v-else-if="cell.isVisited && cell.hasBom">bom</div>  
+                    <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
 
                 </div>
             </div>
