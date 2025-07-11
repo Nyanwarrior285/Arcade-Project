@@ -8,6 +8,8 @@ const bodyMaxLength = ref(2);
 const applePosition = ref({x: 20, y: 7})
 const board = ref([]);
 const loseGame = ref(false);
+const IntervalID = ref();
+const speed = ref(100);
 
 for (let r = 0; r < 15; r++) {
     const row = []
@@ -100,10 +102,21 @@ function createApple() {
     newApple.type = "apple";
 }
 
+function autoMove() {
+    IntervalID.value = setInterval(moveSnake, speed.value);
+}
+
+function stopAutoMove() {
+    if (IntervalID.value) {
+        clearInterval(IntervalID.value);
+    }
+}
+
 function loseSnake() {
     console.log(bodyPosition.value.length);
     loseGame.value = true;
-    alert("You got " + (bodyPosition.value.length**2 * 10) + " score!")
+    stopAutoMove();
+    alert("You got " + (bodyPosition.value.length**2 * 10) + " score!");
 }
 
 function newGame() {
@@ -112,7 +125,7 @@ function newGame() {
     headPosition.value = {x: 5, y: 7};
     bodyPosition.value = [];
     direction.value = "east";
-    bodyMaxLength.value = 2
+    bodyMaxLength.value = 2;
 
     for (let row of board.value) {
         for (let cell of row) {
@@ -138,8 +151,18 @@ function newGame() {
                 </div>
             </div>
         </div>
-        <button v-on:click="moveSnake" style="align-self: center;">Move snake forward one step</button>
-        <button v-on:click="newGame" v-show="loseGame" style="align-self: center;">Reset</button>
+        <button v-on:click="moveSnake" class="button">Move by one space</button>
+        <div class="input-container">
+            <div class="button-container">
+                <button v-on:click="autoMove" class="button">Start</button>
+                <button v-on:click="stopAutoMove" class="button">Stop</button>
+            </div>
+            <div class="button-container">
+                Speed(ms):
+                <input v-model="speed" type="number" class="input"/>
+            </div>
+        </div>
+        <button v-on:click="newGame" v-show="loseGame" class="button">Reset</button>
     </div>
 </template>
 
@@ -187,5 +210,22 @@ function newGame() {
     width: 15px;
     margin-left: 1px;
     margin-right: 1px;
+}
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+.input-container {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+}
+.button {
+    align-self: center;
+}
+.input {
+    align-self: center;
+    field-sizing: content;
 }
 </style>
