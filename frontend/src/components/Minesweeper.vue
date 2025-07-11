@@ -11,7 +11,7 @@ import { ref } from 'vue';
             for ( let c = 0; c < boardSize;  c++ ){              // 遍历当前行的每一列。c 是列索引，从 0 到 cols - 1。
                 
                 row.push({                                  // status of each square:
-                    hasBom: false,                         // initial state: 雷都是没有被排掉的 ，如果玩家排掉了 就变成true
+                    hasBom: false,                          // initial state: 雷都是没有被排掉的 ，如果玩家排掉了 就变成true
                     isVisited: false,                       // 是否被点开
                     isFalged: false,
                     neiborsBom: 0                       
@@ -219,10 +219,10 @@ import { ref } from 'vue';
                             bomed: cell.isVisited && cell.hasBom
                         }"
                 >
-                    <div v-if="cell.isFalged">🚩</div>                  
+                    <div v-if="cell.isFalged">🚩</div>        
                     <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
                     <div v-else-if="cell.isVisited && cell.hasBom">bom</div>  
-                    <div v-else-if="cell.isVisited"> </div> 
+
                 </div>
             </div>
         </div>
@@ -253,12 +253,20 @@ import { ref } from 'vue';
   font-weight: bold;
   cursor: pointer;
 }
-.cell.visited {
+
+/* .cell.visited {
   background-color: #1b85e7;
-}
+  color:#000000;
+} */
+
+.cell.visited:not(.bomed) {
+  background-color: #1b85e7;         /* blue for safe visited cells */
+} 
+
 .cell.flaged {
   background-color: #e5fb57;
 }
+
 .cell.bomed {
   background-color: red;
   color: white;
