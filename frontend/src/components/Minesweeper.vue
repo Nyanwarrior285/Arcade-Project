@@ -107,7 +107,7 @@ import { ref } from 'vue';
         if (cell.hasBom) {
             cell.isVisited = true;
             alert("Bombed & Dead.\nYou Suck!");
-            
+            gameOver.value = true;
             return; 
         }  
           
