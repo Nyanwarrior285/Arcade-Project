@@ -99,12 +99,14 @@ import { ref } from 'vue';
     function visitBom( board, row, col){                   
         const cell = board[row][col];                               // cell: 当前格子, current     
 
+        
+        if ( cell.isVisited || cell.isFalged ) return;              // 如果雷被玩家排掉 isVisited=true  或者 没有被 插旗子： isFalged=true , return
+            
         if (cell.hasBom) {
+            alert("Bombed & Dead.\nYou Suck!");
             cell.isVisited = true;
             return; 
         }  
-        if ( cell.isVisited || cell.isFalged )                     // 如果雷被玩家排掉 isVisited=true  或者 没有被 插旗子： isFalged=true , return
-            return;      
           
 
         cell.isVisited = true;
@@ -140,17 +142,12 @@ import { ref } from 'vue';
     function leftClickCheck( row, col ) {
         console.log("clicked", row, col);
         if (firstClick){
+            console.log("First click! Placing bombs...");
             placeTheBomAvoidingFirstClick(board.value, 5, row, col);
             checkNeiborBom(board.value);
             firstClick = false;
         }
-        console.log("First click! Placing bombs...");
-        if ( ResultCheck( board.value,  row, col) ) {
-            alert("Bombed & Dead.\nYou Suck!");
-            return;
-        } else {
-            visitBom( board.value, row, col);
-        }
+        visitBom( board.value, row, col);
     }
 
 
