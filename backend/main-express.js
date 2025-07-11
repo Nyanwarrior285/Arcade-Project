@@ -1,11 +1,13 @@
 const express = require("express");
 const Score = require("./model.js");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const PORT = 3000;
 
 function main() {
     const app = express();
+    app.use(cors);
 
     app.get("/scores", async (req,res) => {
         const result = await Score.find({});

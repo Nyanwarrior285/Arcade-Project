@@ -6,7 +6,6 @@ import Minesweeper from "./components/Minesweeper.vue"
 const activePage = ref("home");
 
 function navigateTo(page) {
-    console.log("Clicked:", page); 
     activePage.value = page;
 }
 </script>
@@ -38,7 +37,7 @@ p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 95vh;
 }
 
 .color-button{

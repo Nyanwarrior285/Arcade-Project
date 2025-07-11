@@ -71,7 +71,6 @@ function moveSnake() {
 }
 
 function changeDirection(event) {
-    console.log(event);
     if (event.key === "ArrowUp") {
         direction.value = "north";
     }
@@ -107,6 +106,23 @@ function loseSnake() {
     alert("You got " + (bodyPosition.value.length**2 * 10) + " score!")
 }
 
+function newGame() {
+    loseGame.value = false;
+    applePosition.value = {x: 20, y: 7};
+    headPosition.value = {x: 5, y: 7};
+    bodyPosition.value = [];
+    direction.value = "east";
+    bodyMaxLength.value = 2
+
+    for (let row of board.value) {
+        for (let cell of row) {
+            cell.type = "none";
+        }
+    }
+    board.value[applePosition.value.y][applePosition.value.x].type = "apple";
+    board.value[headPosition.value.y][headPosition.value.x].type = "head";
+}
+
 </script>
 
 
@@ -123,6 +139,7 @@ function loseSnake() {
             </div>
         </div>
         <button v-on:click="moveSnake" style="align-self: center;">Move snake forward one step</button>
+        <button v-on:click="newGame" v-show="loseGame" style="align-self: center;">Reset</button>
     </div>
 </template>
 

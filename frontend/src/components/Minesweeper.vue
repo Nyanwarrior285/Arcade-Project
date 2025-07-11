@@ -3,7 +3,9 @@ import { ref } from 'vue';
 
 // game board setup:
     const board = ref([]);
-    
+    const gameOver = ref(false);
+
+
     function createBoard(boardSize) {
         const currentBoard = [];
         for (let r = 0; r < boardSize; r++){                     // all squares in each line (outter loop)
@@ -99,12 +101,15 @@ import { ref } from 'vue';
     function visitBom( board, row, col){                   
         const cell = board[row][col];                               // cell: 当前格子, current     
 
+        
+        if ( cell.isVisited || cell.isFalged ) return;              // 如果雷被玩家排掉 isVisited=true  或者 没有被 插旗子： isFalged=true , return
+            
         if (cell.hasBom) {
             cell.isVisited = true;
+            alert("Bombed & Dead.\nYou Suck!");
+            
             return; 
         }  
-        if ( cell.isVisited || cell.isFalged )                     // 如果雷被玩家排掉 isVisited=true  或者 没有被 插旗子： isFalged=true , return
-            return;      
           
 
         cell.isVisited = true;
@@ -137,20 +142,21 @@ import { ref } from 'vue';
     }
 
     let firstClick = true;
+
     function leftClickCheck( row, col ) {
+        if ( gameOver.value )
+            return;
+        
         console.log("clicked", row, col);
         if (firstClick){
+            console.log("First click! Placing bombs...");
             placeTheBomAvoidingFirstClick(board.value, 5, row, col);
             checkNeiborBom(board.value);
             firstClick = false;
         }
-        console.log("First click! Placing bombs...");
-        if ( ResultCheck( board.value,  row, col) ) {
-            alert("Bombed & Dead.\nYou Suck!");
-            return;
-        } else {
-            visitBom( board.value, row, col);
-        }
+        visitBom( board.value, row, col);
+        checkWin(9);
+        
     }
 
 
@@ -178,12 +184,41 @@ import { ref } from 'vue';
 
 
     function rightClickFlagging( row, col ) {
+        if ( gameOver.value ) return;
+
         const currentCell = board.value[row][col];
         if ( !currentCell.isVisited ) {
             currentCell.isFalged = !currentCell.isFalged;                            // false->true
         }
 
     }
+
+
+    function checkWin( boardSize ) {
+        for (let r = 0; r < boardSize; r++) {
+            for (let c = 0; c < boardSize; c++ ) {
+                const cell = board.value[r][c];
+                if ( !cell.hasBom && !cell.isVisited ) {
+                    return false;
+                }
+            }
+        }
+        alert("Fine, you win, its just luck~")
+        return true;
+    }
+
+
+    function restartGame() {
+        board.value = createBoard(9);         
+// DON'T place bombs now, wait until first click
+        firstClick = true;                    // so bombs avoid first click
+        gameOver.value = false;
+    }
+
+
+
+
+
 
     board.value = createBoard(9);
     placeTheBom(board.value, 5); 
@@ -225,6 +260,8 @@ import { ref } from 'vue';
 
                 </div>
             </div>
+
+            <button class="restart-button" @click="restartGame"> Start Again </button>
         </div>
 </template>
 
@@ -271,4 +308,22 @@ import { ref } from 'vue';
   background-color: red;
   color: white;
 }
+
+.restart-button {
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  background-color: #0b2035;
+  color: white;
+  cursor: pointer;
+}
+.restart-button:hover {
+  background-color: #f6d208;
+}
+
+
+
+
 </style>
