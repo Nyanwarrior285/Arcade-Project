@@ -1,10 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 
-// game board setup:
+    const gameStart = ref(false);
     const board = ref([]);
     const gameOver = ref(false);
+    const numOfBom = ref(5);                                    // line 170
 
+
+
+// game board setup:
 
     function createBoard(boardSize) {
         const currentBoard = [];
@@ -24,20 +28,13 @@ import { ref } from 'vue';
         return currentBoard;
     }
 
-    
-    
-
-
-
-
-
 
 // 初始时的随机放雷, position 不可以重复噢。
-    function placeTheBom(board, numOfBom) {
+    function placeTheBom(board) {
     const boardSize = board.length;
     const positions = [];
 
-    while (positions.length < numOfBom) {
+    while (positions.length < numOfBom.value) {
         const pos = {
             x: pickRandomNumber(boardSize),
             y: pickRandomNumber(boardSize)
@@ -48,6 +45,8 @@ import { ref } from 'vue';
             board[pos.x][pos.y].hasBom = true;
         }
     }
+
+    console.log(numOfBom);
 }
 
     function pickRandomNumber(size) {
@@ -69,6 +68,13 @@ import { ref } from 'vue';
 
         let nRy = '';                                 // neibor Row ( y-value )
         let nCx = '';
+
+
+        console.log("#boms: ", numOfBom.value );
+
+
+
+
 
         for (let r = 0; r < rowLength; r++) {
             for ( let c = 0; c < colLength; c++ ){
@@ -93,6 +99,8 @@ import { ref } from 'vue';
                     }
                 }
                 board[r][c].neiborsBom = count;
+
+                console.log("#boms: ", numOfBom.value );
             }
         }
     }
@@ -148,26 +156,29 @@ import { ref } from 'vue';
             return;
         
         console.log("clicked", row, col);
+
+        console.log("#boms: ", numOfBom.value );
+
         if (firstClick){
             console.log("First click! Placing bombs...");
-            placeTheBomAvoidingFirstClick(board.value, 5, row, col);
+            placeTheBomAvoidingFirstClick(board.value, row, col);
             checkNeiborBom(board.value);
             firstClick = false;
         }
         visitBom( board.value, row, col);
         checkWin(9);
-        
     }
 
 
-    function placeTheBomAvoidingFirstClick(board, numOfBom
-    , firstClickRow, firstClickCol) {
+    function placeTheBomAvoidingFirstClick(board, firstClickRow, firstClickCol) {
+
         const rows = board.length;
         const cols = board[0].length;
         let marked = 0;
 
-        while (marked < numOfBom
+        console.log("#boms: ", numOfBom.value );
 
+        while (marked < numOfBom.value
         ) {
             const r = Math.floor(Math.random() * rows);
             const c = Math.floor(Math.random() * cols);
@@ -180,6 +191,9 @@ import { ref } from 'vue';
             board[r][c].hasBom = true;
             marked++;
         }
+
+
+        console.log("#boms: ", numOfBom.value );
     }
 
 
@@ -209,23 +223,16 @@ import { ref } from 'vue';
 
 
     function restartGame() {
-        board.value = createBoard(9);         
-// DON'T place bombs now, wait until first click
-        firstClick = true;                    // so bombs avoid first click
-        gameOver.value = false;
+        if ( numOfBom.value >= 4 && numOfBom.value <= 20 ) {
+            board.value = createBoard(9);         
+            // DON'T place bombs now, wait until first click
+            firstClick = true;                    // so bombs avoid first click
+            gameOver.value = false;
+            gameStart.value = true;
+        } else {
+            alert( "The amount of boms required is between 4 ~ 20 " );
+        }
     }
-
-
-
-
-
-
-    board.value = createBoard(9);
-    placeTheBom(board.value, 5); 
-    checkNeiborBom(board.value);
-
-
-
 
 </script>
 
@@ -235,34 +242,41 @@ import { ref } from 'vue';
 
 
 <template>
-        <div class="MinesBoard" >
-            <!-- row 是当前行的数组, rowIndex is 当前行的索引  -->
-            
-            <div v-for="(row, rowIndex) in board"      
-                :key="rowIndex" 
-                class="row"
-            >
-                <div v-for="( cell, colIndex ) in row "
-                    :key="colIndex"
-                    class="cell"
-                
-                    @click="leftClickCheck(rowIndex, colIndex)" 
-                    @contextmenu.prevent="rightClickFlagging(rowIndex, colIndex)"                              
-                        :class="{ 
-                            visited: cell.isVisited, 
-                            flaged: cell.isFalged,
-                            bomed: cell.isVisited && cell.hasBom
-                        }"
-                >
-                    <div v-if="cell.isFalged">🚩</div>  
-                    <div v-else-if="cell.isVisited && cell.hasBom">bom</div>  
-                    <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
+    <div class="MinesBoard" >
+        <div v-if"!gameStart">  
+            <input type="number" id="bom-quantity" v-model="numOfBom" min="4" max="20" />
+            <button class="enter-numbers-of-boms" @click="restartGame()">Enter # Boms</button>
+        </div>
 
-                </div>
+    </div>
+    
+        <!-- row 是当前行的数组, rowIndex is 当前行的索引  -->
+        <div v-for="(row, rowIndex) in board"      
+            :key="rowIndex" 
+            class="row"
+        >
+            <div v-for="( cell, colIndex ) in row "
+                :key="colIndex"
+                class="cell"
+
+                @click="leftClickCheck(rowIndex, colIndex)" 
+                @contextmenu.prevent="rightClickFlagging(rowIndex, colIndex)"                              
+                    :class="{ 
+                        visited: cell.isVisited, 
+                        flaged: cell.isFalged,
+                        bomed: cell.isVisited && cell.hasBom
+                    }"
+            >
+                <div v-if="cell.isFalged">🚩</div>  
+                <div v-else-if="cell.isVisited && cell.hasBom">bom</div>  
+                <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
+
             </div>
 
-            <button class="restart-button" @click="restartGame"> Start Again </button>
         </div>
+
+        <button v-if="gameOver" class="restart-button" @click="restartGame">Start Again</button>
+
 </template>
 
 
@@ -272,6 +286,22 @@ import { ref } from 'vue';
 
 
 <style scoped>
+
+.enter-numbers-of-boms {
+    padding: 8px 16px;
+    background-color: #28a745; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.enter-numbers-of-boms:hover{
+    background-color: #07741f;
+}
+
 .MinesBoard {
   display: flex;
   flex-direction: column;
@@ -291,11 +321,6 @@ import { ref } from 'vue';
   cursor: pointer;
 }
 
-/* .cell.visited {
-  background-color: #1b85e7;
-  color:#000000;
-} */
-
 .cell.visited:not(.bomed) {
   background-color: #1b85e7;         /* blue for safe visited cells */
 } 
@@ -311,19 +336,20 @@ import { ref } from 'vue';
 
 .restart-button {
   margin-bottom: 10px;
-  padding: 6px 12px;
+  padding: 8px 16px;
   font-weight: bold;
   border: none;
   border-radius: 6px;
   background-color: #0b2035;
   color: white;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+
 }
 .restart-button:hover {
   background-color: #f6d208;
 }
 
-
-
+  
 
 </style>
