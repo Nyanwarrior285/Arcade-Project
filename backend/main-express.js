@@ -2,12 +2,28 @@ const express = require("express");
 const Score = require("./model.js");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const User = require("./Users");
+require('dotenv').config();
 
 const PORT = 3000;
 
 function main() {
     const app = express();
-    app.use(cors);
+    app.use(cors({
+        credentials: true
+    }));
+
+    app.use(express.json());
+    app.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: false, // set to true in production with HTTPS
+  }
+}));
+
 
     app.get("/scores", async (req,res) => {
         const result = await Score.find({});

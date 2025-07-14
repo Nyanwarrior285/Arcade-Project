@@ -17,8 +17,11 @@ const scoreSchema = new mongoose.Schema({
 
 const Score = mongoose.model("Score", scoreSchema);
 
-mongoose.connect(
-    "mongodb+srv://Bradley:ILikeMe1!@cluster0.pqxkiyk.mongodb.net/Arcade?retryWrites=true&w=majority&appName=Cluster0"
-);
+
+// remember to : npm install dotenv in backend directory
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 module.exports = Score;
