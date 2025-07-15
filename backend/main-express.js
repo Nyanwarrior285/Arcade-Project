@@ -12,10 +12,14 @@ const PORT = process.env.PORT || 3000;    // ok, default to 3000 if no env PORT 
 
 function main() {
     const app = express();
-    app.use(cors({
-        origin: 'http://localhost:5174',     // alright frontend URL
-        credentials: true
-    }));
+    app.use(
+        cors({
+            credentials: true,
+            origin: function (origin, callback) {
+                callback(null, origin);
+            },
+        }),
+    );
 
     app.use(express.json());
     app.use(session({
