@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3000;    // ok, default to 3000 if no env PORT 
 function main() {
     const app = express();
     app.use(cors({
+        origin: 'http://localhost:5174',     // alright frontend URL
         credentials: true
     }));
 
@@ -138,9 +139,16 @@ app.get("/logout", ( req, res ) => {
         }
     });
 
-    app.listen(PORT, () => {
-        console.log("Server listening at http://localhost:" + PORT + "/");
+
+
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running at http://0.0.0.0:${PORT}`);
     });
+
+    // app.listen(PORT, "0.0.0.0", () => {
+    //     console.log(`Server listening at http://0.0.0.0:"${PORT}`);
+    // });
 };
 
 main();
