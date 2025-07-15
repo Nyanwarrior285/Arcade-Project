@@ -1,6 +1,6 @@
 <script setup>
   
-  const BASE_URL = 'http://localhost:5174';
+  const BASE_URL = 'http://localhost:3000';
   import { ref } from "vue";
   import Snake from "./components/Snake.vue";
   import Minesweeper from "./components/Minesweeper.vue";
