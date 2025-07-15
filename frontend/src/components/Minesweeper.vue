@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+    import { ref } from 'vue';
 
     const gameStart = ref(false);
     const board = ref([]);
@@ -110,7 +110,7 @@ import { ref } from 'vue';
         const cell = board[row][col];                               // cell: 当前格子, current     
 
         
-        if ( cell.isVisited || cell.isFalged ) return;              // 如果雷被玩家排掉 isVisited=true  或者 没有被 插旗子： isFalged=true , return
+        if ( cell.isVisited || cell.isFalged ) return;              // 如果雷被玩家排掉 isVisited=true  或者 没有被 插旗子： defult of isFalged  false -> true now , return
             
         if (cell.hasBom) {
             cell.isVisited = true;
@@ -313,8 +313,8 @@ import { ref } from 'vue';
 .cell {
   width: 30px;
   height: 30px;
-  background-color: #000000;
-  border: 1px solid #999;
+  background-color: grey;
+  border: 1px solid #dbd9d9;
   text-align: center;
   line-height: 30px;
   font-weight: bold;
