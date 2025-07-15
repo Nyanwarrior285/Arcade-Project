@@ -112,11 +112,22 @@ function stopAutoMove() {
     }
 }
 
-function loseSnake() {
-    console.log(bodyPosition.value.length);
+async function loseSnake() {
     loseGame.value = true;
     stopAutoMove();
-    alert("You got " + (bodyPosition.value.length**2 * 10) + " score!");
+    const score = (bodyPosition.value.length**2) * 10;
+    const name = prompt("You got " + score + " score! \nWrite your name to submit your score: ");
+    if (!((name.type === undefined) || (name.trim() === ""))) {
+        const res = await fetch("http://localhost:3000/scores", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                name: name,
+                score: score,
+                game: "snake"
+            })
+        })
+    }
 }
 
 function newGame() {
@@ -177,7 +188,6 @@ function newGame() {
     flex-direction: row;
     margin-top: 1px;
     margin-bottom: 1px;
-    background-color: white;
 }
 .snake-col {
     display: flex;

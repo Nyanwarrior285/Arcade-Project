@@ -185,7 +185,7 @@ function navigateTo(page) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 95vh;
   background-color: #242631;
   box-sizing: border-box;
 }
