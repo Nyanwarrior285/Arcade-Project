@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require("express");
 const session = require('express-session');
 const mongoose = require("mongoose");
@@ -5,9 +7,8 @@ const cors = require("cors");
 // models: 
 const Score = require("./model.js");
 const User = require("./Users.js");                // model import, the main-express is the main backend entry point.  connect the models and front end damn.
-require('dotenv').config();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;    // ok, default to 3000 if no env PORT is set
 
 function main() {
     const app = express();
