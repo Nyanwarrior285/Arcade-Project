@@ -10,6 +10,9 @@ const board = ref([]);
 const loseGame = ref(false);
 const IntervalID = ref();
 const speed = ref(100);
+const currentSpeed = ref(100);
+// const leaderBoard = ref(await fetch("http://localhost:3000/scores/game/snake"));
+const score = ref(40);
 
 for (let r = 0; r < 15; r++) {
     const row = []
@@ -56,7 +59,6 @@ function moveSnake() {
         return;
     } else {
         if (headPosition.value.x == applePosition.value.x && headPosition.value.y == applePosition.value.y) {
-            bodyMaxLength.value += 2;
             createApple();
         }
         board.value[headPosition.value.y][headPosition.value.x].type = "head";
@@ -100,34 +102,47 @@ function createApple() {
     applePosition.value.x = newApple.x;
     applePosition.value.y = newApple.y;
     newApple.type = "apple";
+
+
+    score.value += bodyMaxLength.value * (1000 / currentSpeed.value);
+    bodyMaxLength.value += 1;
+    score.value += bodyMaxLength.value * (1000 / currentSpeed.value);
+
+    score.value += bodyMaxLength.value * (1000 / currentSpeed.value);
+    bodyMaxLength.value += 1;
+    score.value += bodyMaxLength.value * (1000 / currentSpeed.value);
 }
 
 function autoMove() {
-    IntervalID.value = setInterval(moveSnake, speed.value);
+    currentSpeed.value = speed.value;
+    IntervalID.value = setInterval(moveSnake, currentSpeed.value);
 }
 
 function stopAutoMove() {
     if (IntervalID.value) {
         clearInterval(IntervalID.value);
     }
+    IntervalID.value = 0;
+    currentSpeed.value = 100;
 }
 
 async function loseSnake() {
     loseGame.value = true;
     stopAutoMove();
-    const score = (bodyPosition.value.length**2) * 10;
-    const name = prompt("You got " + score + " score! \nWrite your name to submit your score: ");
-    if (!((name.type === undefined) || (name.trim() === ""))) {
+    const name = prompt("You got " + score.value + " score! \nWrite your name to submit your score: ");
+    if (name) {
         const res = await fetch("http://localhost:3000/scores", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 name: name,
-                score: score,
+                score: score.value,
                 game: "snake"
             })
-        })
-    }
+        });
+        console.log(res);
+    };
+    // leaderBoard.value = await fetch("http://localhost:3000/scores/game/snake");
 }
 
 function newGame() {
@@ -137,6 +152,7 @@ function newGame() {
     bodyPosition.value = [];
     direction.value = "east";
     bodyMaxLength.value = 2;
+    score.value = 40;
 
     for (let row of board.value) {
         for (let cell of row) {
@@ -152,6 +168,7 @@ function newGame() {
 
 <template>
     <div class="snake-container" tabindex="0" v-on:keydown="changeDirection">
+        <strong>Score: {{score}}</strong>
         <div class="snake-col">
             <div v-for="row in board" class="snake-row">
                 <div v-for="cell in row">
