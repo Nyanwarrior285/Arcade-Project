@@ -124,6 +124,11 @@ app.get("/logout", ( req, res ) => {
         res.json(result);
     });
 
+    app.get("/scores/game/:gameName", async (req,res) => {
+        const result = await Score.find({game: req.params.gameName}).sort({score: -1})
+        res.json(result);
+    });
+
     app.get("/scores/:id", async (req,res) => {
         const object_id = new mongoose.Types.ObjectId(req.params.id);
         const result = await Score.findById(object_id)
@@ -139,7 +144,7 @@ app.get("/logout", ( req, res ) => {
         if (result) {
             res.json(result);
         } else {
-            res.status(500).send({error: "Failed to create object"})
+            res.status(500).send({error: "Failed to create object"});
         }
     });
 
