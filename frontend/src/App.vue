@@ -104,7 +104,7 @@ async function handleSubmit() {
 //============================================= / handle Logout / =====================================================================
 
 function logoutToLogin() {
-  console.log(page.value);
+  console.log(activePage.value);
   activePage.value = 'login';
 }
 

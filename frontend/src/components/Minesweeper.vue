@@ -3,6 +3,7 @@
 
     const gameStart = ref(false);
     const board = ref([]);
+    const timer = ref(0);
     const gameOver = ref(false);
     const numOfBom = ref(5);                                    // line 170
 
@@ -105,6 +106,21 @@
         }
     }
 
+//=============================================== Timer =============================================================================
+    let timerSeq = null;
+    function startTimer () {
+        timerSeq = setInterval( () => { timer.value++;}, 1000 );         // 1000 毫秒 = 1s
+    }           // setIntervall is a build in function
+                // clearInterval
+
+    function stopTimer () {
+        clearInterval( timerSeq );           // timerSeq act like ID, when pass it in function, it know whicone to stop..
+    }
+
+
+
+
+
 //点击一个格子后进行揭示，如果是空白的（周围没有地雷），就自动展开邻居格子（递归展开）。       
     function visitBom( board, row, col){                   
         const cell = board[row][col];                               // cell: 当前格子, current     
@@ -152,18 +168,22 @@
     let firstClick = true;
 
     function leftClickCheck( row, col ) {
-        if ( gameOver.value )
+        if ( gameOver.value ) {
+            stopTimer();
             return;
-        
+        }
+
+    
         console.log("clicked", row, col);
 
         console.log("#boms: ", numOfBom.value );
 
         if (firstClick){
+            startTimer();
+            firstClick = false;
             console.log("First click! Placing bombs...");
             placeTheBomAvoidingFirstClick(board.value, row, col);
             checkNeiborBom(board.value);
-            firstClick = false;
         }
         visitBom( board.value, row, col);
         checkWin(9);
@@ -214,9 +234,11 @@
                 const cell = board.value[r][c];
                 if ( !cell.hasBom && !cell.isVisited ) {
                     return false;
+                    
                 }
             }
         }
+        stopTimer();
         alert("Fine, you win, its just luck~")
         return true;
     }
@@ -229,6 +251,9 @@
             firstClick = true;                    // so bombs avoid first click
             gameOver.value = false;
             gameStart.value = true;
+            stopTimer();        // stop the old timer..
+            timer.value = 0;    // and reset the timer
+
         } else {
             alert( "The amount of boms required is between 4 ~ 20 " );
         }
@@ -243,6 +268,9 @@
 
 <template>
     <div class="MinesBoard" >
+
+        <p> Time: {{ timer }} s</p>  
+
         <div v-if"!gameStart">  
             <input type="number" id="bom-quantity" v-model="numOfBom" min="4" max="20" />
             <button class="enter-numbers-of-boms" @click="restartGame()">Enter # Boms</button>
@@ -250,32 +278,32 @@
 
     </div>
     
-        <!-- row 是当前行的数组, rowIndex is 当前行的索引  -->
-        <div v-for="(row, rowIndex) in board"      
-            :key="rowIndex" 
-            class="row"
+    <!-- row 是当前行的数组, rowIndex is 当前行的索引  -->
+    <div v-for="(row, rowIndex) in board"      
+        :key="rowIndex" 
+        class="row"
+    >
+        <div v-for="( cell, colIndex ) in row "
+            :key="colIndex"
+            class="cell"
+
+            @click="leftClickCheck(rowIndex, colIndex)" 
+            @contextmenu.prevent="rightClickFlagging(rowIndex, colIndex)"                              
+                :class="{ 
+                    visited: cell.isVisited, 
+                    flaged: cell.isFalged,
+                    bomed: cell.isVisited && cell.hasBom
+                }"
         >
-            <div v-for="( cell, colIndex ) in row "
-                :key="colIndex"
-                class="cell"
-
-                @click="leftClickCheck(rowIndex, colIndex)" 
-                @contextmenu.prevent="rightClickFlagging(rowIndex, colIndex)"                              
-                    :class="{ 
-                        visited: cell.isVisited, 
-                        flaged: cell.isFalged,
-                        bomed: cell.isVisited && cell.hasBom
-                    }"
-            >
-                <div v-if="cell.isFalged">🚩</div>  
-                <div v-else-if="cell.isVisited && cell.hasBom">bom</div>  
-                <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
-
-            </div>
+            <div v-if="cell.isFalged">🚩</div>  
+            <div v-else-if="cell.isVisited && cell.hasBom">bom</div>  
+            <div v-else-if="cell.isVisited && cell.neiborsBom > 0"> {{ cell.neiborsBom }} </div>
 
         </div>
 
-        <button v-if="gameOver" class="restart-button" @click="restartGame">Start Again</button>
+    </div>
+
+    <button v-if="gameOver" class="restart-button" @click="restartGame">Start Again</button>
 
 </template>
 
@@ -306,6 +334,9 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  color: white;
+  font-size: 18px;
+  margin-bottom: 8px;;
 }
 .row {
   display: flex;
