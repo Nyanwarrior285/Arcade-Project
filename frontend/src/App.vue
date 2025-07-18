@@ -119,53 +119,67 @@ function navigateTo(page) {
 
 
 <template>
-  <div v-if="activePage === 'login'"class="auth-container">
-    <!--line122  如果 isLogin 是 true，就显示 "Login"
-    否则就显示 "Sign Up" -->
-    <h2>{{ isLogin ? "Login" : "Sign Up" }}</h2>        <!-- 	•	{{ ... }} 是 Vue.js 的插值语法，用于在 HTML 中动态插入变量或表达式的值。 -->
+  <div v-if="activePage === 'login'" class="body-container">
+    <div class="auth-container">
+      <!--line122  如果 isLogin 是 true，就显示 "Login"
+      否则就显示 "Sign Up" -->
+      
+      <div id="stars"></div>
+      <div id="stars2"></div>
+      <div id="stars3"></div>
 
-    <form @submit.prevent="handleSubmit">               <!-- 当表单被“提交”（submit）时，执行 handleSubmit() 这个函数。-->
-      <div>
-        <label>Email:</label>
-        <input type="email" v-model="email" required />       <!-- Vue 的双向绑定语法：email 是 Vue 中的响应式变量，这行代码的意思是：“输入框的值 ←→ email 变量实时同步” -->
+      <div id="title">
+        <span>THY SHALL HAVE FUN..</span>
+        <span>Hopefully...</span>
       </div>
 
-      <div>
-        <label>Password:</label>
-        <input type="password" v-model="password" required />
-      </div>
-
-      <div v-if="!isLogin">
-        <label>Name:</label>
-        <input type="text" v-model="name" required />
-      </div>
-
-      <button type="submit">{{ isLogin ? "Login" : "Sign Up" }}</button>
-    </form>
-
-    <p>
-      {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
-      <button @click="toggleForm">{{ isLogin ? "Sign Up" : "Login" }}</button>
-    </p>
-  </div>
-    
 
 
 
+      <h2>{{ isLogin ? "Login" : "Sign Up" }}</h2>        <!-- 	•	{{ ... }} 是 Vue.js 的插值语法，用于在 HTML 中动态插入变量或表达式的值。 -->
 
-    <div v-else class="container">
-        <button @click="logoutToLogin" class="logout-button">Log out</button>
-        <nav class="nav-bar">
-            <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
-            <a href="#" @click.prevent="navigateTo('snake')" class="snake-button">Snake</a>
-            <a href="#" @click.prevent="navigateTo('minesweeper')" class="minesweeper-button">MineSweeper</a>
-        </nav>
+      <form @submit.prevent="handleSubmit">               <!-- 当表单被“提交”（submit）时，执行 handleSubmit() 这个函数。-->
+        <div>
+          <label>Email:</label>
+          <input type="email" v-model="email" required />       <!-- Vue 的双向绑定语法：email 是 Vue 中的响应式变量，这行代码的意思是：“输入框的值 ←→ email 变量实时同步” -->
+        </div>
 
-        <div v-if="activePage === 'home'" title="Hello World"></div>
-        <Snake v-if="activePage === 'snake'" />
-        <Minesweeper v-if="activePage === 'minesweeper'" />
+        <div>
+          <label>Password:</label>
+          <input type="password" v-model="password" required />
+        </div>
 
+        <div v-if="!isLogin">
+          <label>Name:</label>
+          <input type="text" v-model="name" required />
+        </div>
+
+        <button type="submit">{{ isLogin ? "Login" : "Sign Up" }}</button>
+      </form>
+
+      <p>
+        {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
+        <button @click="toggleForm">{{ isLogin ? "Sign Up" : "Login" }}</button>
+      </p>
     </div>
+  </div>
+
+
+
+
+  <div v-else class="container">
+    <button @click="logoutToLogin" class="logout-button">Log out</button>
+    <nav class="nav-bar">
+      <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
+      <a href="#" @click.prevent="navigateTo('snake')" class="snake-button">Snake</a>
+      <a href="#" @click.prevent="navigateTo('minesweeper')" class="minesweeper-button">MineSweeper</a>
+    </nav>
+
+    <div v-if="activePage === 'home'" title="Hello World"></div>
+    <Snake v-if="activePage === 'snake'" />
+    <Minesweeper v-if="activePage === 'minesweeper'" />
+
+  </div>
 </template>
 
 
@@ -190,18 +204,216 @@ function navigateTo(page) {
   box-sizing: border-box;
 }
 
-html, body {
+
+/* ==================================== login background ==================================================================================== */
+
+
+/* html, body { */
+.body-container {
   margin: 0;
   padding: 0;
-  height: 100%;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  overflow:hidden;
+  height: 100vh;
   width: 100%;
   background-color: #242631; /* match your .container */
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 
-body {
+#stars, #starts2,#stars3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+}
+
+#stars {
+  box-shadow: 
+    100px 400px #fff, 300px 800px #fff, 800px 300px #fff,
+    1200px 500px #fff, 600px 100px #fff, 200px 900px #fff;
+  animation: animStar 50s linear infinite;
+}
+
+#stars::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
+#stars2 {
+  width: 2px;
+  height: 2px;
+  box-shadow:
+    250px 700px #ccc, 900px 500px #ccc, 1000px 1000px #ccc,
+    1400px 200px #ccc, 500px 900px #ccc;
+  animation: animStar 100s linear infinite;
+}
+
+#stars2::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
+#stars3 {
+  width: 3px;
+  height: 3px;
+  box-shadow:
+    200px 300px #888, 800px 1200px #888, 1500px 600px #888,
+    700px 700px #888, 300px 1500px #888;
+  animation: animStar 150s linear infinite;
+}
+
+#stars3::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
+@keyframes animStar {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-2000px); }
+}
+
+/* TITLE TEXT */
+#title {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: white;
+  font-size: 50px;
+  font-weight: 300;
+  letter-spacing: 10px;
+  transform: translateY(-50%);
+}
+
+#title span {
+  display: block;
+  background: -webkit-linear-gradient(white, #38495a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* Background */
+html, body {
+  height: 100%;
+  margin: 0;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
   overflow: hidden;
 }
+
+/* Layer 1 - Small Stars */
+#stars {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  position: absolute;
+  box-shadow: 
+    500px 800px #fff,
+    1200px 700px #fff,
+    300px 1000px #fff,
+    900px 300px #fff,
+    700px 600px #fff,
+    200px 1200px #fff,
+    400px 150px #fff,
+    1500px 900px #fff,
+    1800px 400px #fff,
+    50px 300px #fff; /* just a sample — repeat for more stars */
+  animation: animStar 50s linear infinite;
+}
+
+#stars::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
+/* Layer 2 - Medium Stars */
+#stars2 {
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  position: absolute;
+  box-shadow: 
+    600px 900px #ccc,
+    1300px 600px #ccc,
+    800px 1100px #ccc,
+    1100px 200px #ccc,
+    300px 500px #ccc;
+  animation: animStar 100s linear infinite;
+}
+
+#stars2::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
+/* Layer 3 - Big Stars */
+#stars3 {
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  position: absolute;
+  box-shadow: 
+    700px 1000px #888,
+    1500px 500px #888,
+    400px 1300px #888,
+    100px 800px #888,
+    900px 200px #888;
+  animation: animStar 150s linear infinite;
+}
+
+#stars3::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
+/* Star animation keyframes */
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+
+/* ======================================================================================================================== */
+
+
+/* body {
+  overflow: hidden;
+} */
 
 .nav-bar {
   display: flex;

@@ -2,10 +2,13 @@
     import { ref } from 'vue';
 
     const gameStart = ref(false);
+    const baseScore = ref(1000);
+    const mineScore = ref(0);
     const board = ref([]);
     const timer = ref(0);
     const gameOver = ref(false);
-    const numOfBom = ref(5);                                    // line 170
+    const numOfBom = ref(5);     
+    const wrongFlags = ref (0);                               // line 170
 
 
 
@@ -30,36 +33,6 @@
     }
 
 
-// 初始时的随机放雷, position 不可以重复噢。
-    function placeTheBom(board) {
-    const boardSize = board.length;
-    const positions = [];
-
-    while (positions.length < numOfBom.value) {
-        const pos = {
-            x: pickRandomNumber(boardSize),
-            y: pickRandomNumber(boardSize)
-        };
-
-        if (!positions.some(p => checkPositionMatch(p, pos))) {
-            positions.push(pos);
-            board[pos.x][pos.y].hasBom = true;
-        }
-    }
-
-    console.log(numOfBom);
-}
-
-    function pickRandomNumber(size) {
-        return Math.floor( Math.random() * size );
-    }
-
-    function checkPositionMatch( c, r ){
-        return c.x === r.x && c.y === r.y;
-    }
-
-
-
 // r: y,  c: x.               
 // (  dy, dx )
 
@@ -72,9 +45,6 @@
 
 
         console.log("#boms: ", numOfBom.value );
-
-
-
 
 
         for (let r = 0; r < rowLength; r++) {
@@ -120,7 +90,6 @@
 
 
 
-
 //点击一个格子后进行揭示，如果是空白的（周围没有地雷），就自动展开邻居格子（递归展开）。       
     function visitBom( board, row, col){                   
         const cell = board[row][col];                               // cell: 当前格子, current     
@@ -156,20 +125,14 @@
     }
 
 
-    function ResultCheck(board, row, col) {
-        return board[row][col].hasBom;
-
-        // if (board[row][col].hasBom) {
-        //     return true;
-        // }
-        // return false;
-    }
 
     let firstClick = true;
 
     function leftClickCheck( row, col ) {
         if ( gameOver.value ) {
             stopTimer();
+            scoreCalculation();
+            console.log(scoreCalculation());
             return;
         }
 
@@ -182,6 +145,7 @@
             startTimer();
             firstClick = false;
             console.log("First click! Placing bombs...");
+            mineScore.value = 0;
             placeTheBomAvoidingFirstClick(board.value, row, col);
             checkNeiborBom(board.value);
         }
@@ -220,13 +184,49 @@
     function rightClickFlagging( row, col ) {
         if ( gameOver.value ) return;
 
+
         const currentCell = board.value[row][col];
+        
         if ( !currentCell.isVisited ) {
             currentCell.isFalged = !currentCell.isFalged;                            // false->true
-        }
+        } else if ( !cell.hasBom && cell.isFalged) {
+                    wrongFlags.value++;                    
+                }
+        return wrongFlags.value;
 
     }
 
+
+
+
+
+
+    function scoreCalculation() {
+        const timePenalty = timer.value * 2;
+        const wrongFlagPennalty = wrongFlags.value * 5;
+
+        mineScore.value = baseScore.value - timePenalty - wrongFlagPennalty;
+        return mineScore.value;
+    }
+
+
+    // function countWrongFlags(boardSize) {
+    //     let count = 0;
+    //     for (let r = 0; r < boardSize; r++) {
+    //         for (let c = 0; c < boardSize; c++ ) {
+    //             const cell = board.value[r][c];
+    //             if ( !cell.hasBom && cell.isFalged) {
+    //                 count++;                    
+    //             }
+    //         }
+    //     }
+    //     return count;
+    // }
+
+
+    // function penalties() {
+
+    // }
 
     function checkWin( boardSize ) {
         for (let r = 0; r < boardSize; r++) {
@@ -239,6 +239,10 @@
             }
         }
         stopTimer();
+        scoreCalculation();
+
+        console.log( scoreCalculation() );
+
         alert("Fine, you win, its just luck~")
         return true;
     }
@@ -262,7 +266,7 @@
 </script>
 
 
-<!-- ============================================================================================================================================ -->
+// <!-- ============================================================================================================================================ -->
 
 
 
@@ -270,6 +274,7 @@
     <div class="MinesBoard" >
 
         <p> Time: {{ timer }} s</p>  
+        <p class="mine-score"> Final Score: <span v-if="gameOver">{{ mineScore }} </span></p>
 
         <div v-if"!gameStart">  
             <input type="number" id="bom-quantity" v-model="numOfBom" min="4" max="20" />
@@ -336,7 +341,7 @@
   gap: 2px;
   color: white;
   font-size: 18px;
-  margin-bottom: 8px;;
+  margin-bottom: 8px;
 }
 .row {
   display: flex;
@@ -363,6 +368,13 @@
 .cell.bomed {
   background-color: red;
   color: white;
+}
+
+.mine-score {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 8px;
+
 }
 
 .restart-button {
