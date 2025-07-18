@@ -135,33 +135,34 @@ function navigateTo(page) {
 
 
 
+      <div class="login-box">
+        <h2>{{ isLogin ? "Login" : "Sign Up" }}</h2>        <!-- 	•	{{ ... }} 是 Vue.js 的插值语法，用于在 HTML 中动态插入变量或表达式的值。 -->
+        <form @submit.prevent="handleSubmit" >               <!-- 当表单被“提交”（submit）时，执行 handleSubmit() 这个函数。-->
+        
+          <div>
+            <label>Email:</label>
+            <input type="email" v-model="email" required />       <!-- Vue 的双向绑定语法：email 是 Vue 中的响应式变量，这行代码的意思是：“输入框的值 ←→ email 变量实时同步” -->
+          </div>
 
-      <h2>{{ isLogin ? "Login" : "Sign Up" }}</h2>        <!-- 	•	{{ ... }} 是 Vue.js 的插值语法，用于在 HTML 中动态插入变量或表达式的值。 -->
+          <div>
+            <label>Password:</label>
+            <input type="password" v-model="password" required />
+          </div>
 
-      <form @submit.prevent="handleSubmit">               <!-- 当表单被“提交”（submit）时，执行 handleSubmit() 这个函数。-->
-        <div>
-          <label>Email:</label>
-          <input type="email" v-model="email" required />       <!-- Vue 的双向绑定语法：email 是 Vue 中的响应式变量，这行代码的意思是：“输入框的值 ←→ email 变量实时同步” -->
+          <div v-if="!isLogin">
+            <label>Name:</label>
+            <input type="text" v-model="name" required />
+          </div>
+    
+          <button type="submit">{{ isLogin ? "Login" : "Sign Up" }}</button>
+        </form>
+        
+        <p>
+          {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
+          <button @click="toggleForm">{{ isLogin ? "Sign Up" : "Login" }}</button>
+        </p>
         </div>
-
-        <div>
-          <label>Password:</label>
-          <input type="password" v-model="password" required />
-        </div>
-
-        <div v-if="!isLogin">
-          <label>Name:</label>
-          <input type="text" v-model="name" required />
-        </div>
-
-        <button type="submit">{{ isLogin ? "Login" : "Sign Up" }}</button>
-      </form>
-
-      <p>
-        {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
-        <button @click="toggleForm">{{ isLogin ? "Sign Up" : "Login" }}</button>
-      </p>
-    </div>
+      </div>
   </div>
 
 
@@ -187,12 +188,15 @@ function navigateTo(page) {
 <style scoped>
 
 .auth-container {
+  overflow-x:  hidden;
   max-width: 400px;
   margin: 2rem auto;
   padding: 1rem;
-  /* border: 1px solid #ddd; */
   border-radius: 8px;
+  margin-top: 14%;
 }
+
+
 
 .container {
   display: flex;
@@ -205,10 +209,100 @@ function navigateTo(page) {
 }
 
 
+
+.login-box {
+  background: rgba(15, 15, 25, 0.85);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.2), 0 0 60px rgba(0, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  text-align: center;
+  max-width: 100% ;
+  margin: 0;
+  animation: fadeIn 1.2s ease-out;
+  z-index: 2;
+
+}
+
+.login-box div {
+  overflow-x: hidden;
+  text-align: left;
+
+}
+
+.login-box h2 {
+  overflow-x: hidden; 
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00f7ff;
+  text-shadow: 0 0 12px rgba(0, 247, 255, 0.5);
+}
+
+.login-box input {
+  overflow-x:  hidden;
+
+  width: 100%;
+  padding: 10px 12px;
+  margin: 10px 0 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1f1f2e;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+.login-box input:focus {
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+
+.login-box button[type="submit"] {
+  background: linear-gradient(135deg, #00f7ff, #007d94);
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 247, 255, 0.3);
+}
+
+.login-box button[type="submit"]:hover {
+  background: linear-gradient(135deg, #00d0ff, #006a80);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 247, 255, 0.6);
+}
+
+/* Toggle form button */
+.login-box p button {
+  background: none;
+  border: none;
+  color: #00f7ff;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 0;
+  text-decoration: underline;
+  font-size: 0.95rem;
+}
+
+
+.login-box form label {
+  font-size: 0.95rem;
+  overflow-x: hidden; 
+}
+
+
+
 /* ==================================== login background ==================================================================================== */
 
 
-/* html, body { */
 .body-container {
   margin: 0;
   padding: 0;
@@ -290,7 +384,7 @@ function navigateTo(page) {
 /* TITLE TEXT */
 #title {
   position: absolute;
-  top: 50%;
+  top: 15%;
   left: 0;
   right: 0;
   text-align: center;
@@ -308,9 +402,14 @@ function navigateTo(page) {
   -webkit-text-fill-color: transparent;
 }
 
+#title span:nth-child(2) {
+  font-size: 20px;         /* or any size you want */
+}
+
 
 /* Background */
 html, body {
+  overflow: hidden;
   height: 100%;
   margin: 0;
   background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
