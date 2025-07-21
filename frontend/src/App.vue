@@ -61,6 +61,7 @@ async function handleSubmit() {
       if (res.ok) {
         const result = await res.json();
         console.log('Login successful:', result);
+        name.value = result.username;
         activePage.value = 'home';                    // switch to MainPage after login
       
         // TODO: 设置 currentUser、跳转页面等
@@ -177,7 +178,7 @@ function navigateTo(page) {
     </nav>
 
     <div v-if="activePage === 'home'" title="Hello World"></div>
-    <Snake v-if="activePage === 'snake'" />
+    <Snake v-if="activePage === 'snake'" :name="name"/>
     <Minesweeper v-if="activePage === 'minesweeper'" />
 
   </div>
@@ -187,16 +188,20 @@ function navigateTo(page) {
 
 <style scoped>
 
+
 .auth-container {
-  overflow-x:  hidden;
-  max-width: 400px;
-  margin: 2rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+
   padding: 1rem;
-  border-radius: 8px;
-  margin-top: 14%;
+  padding-top: 10vh;         
+  box-sizing: border-box;
 }
-
-
 
 .container {
   display: flex;
@@ -208,10 +213,9 @@ function navigateTo(page) {
   box-sizing: border-box;
 }
 
-
-
 .login-box {
-  /* display: flex; */
+
+  display: block; 
   background: rgba(15, 15, 25, 0.85);
   padding: 2.5rem;
   border-radius: 16px;
@@ -219,22 +223,25 @@ function navigateTo(page) {
   backdrop-filter: blur(10px);
   color: white;
   text-align: center;
-  max-width: 100% ;
-  margin: 0;
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
   animation: fadeIn 1.2s ease-out;
   z-index: 2;
 
-}
+} 
 
 .login-box div {
   overflow-x: hidden;
   text-align: left;
   margin: 0 auto;
+  min-height: fit-content;
 }
 
 .login-box h2 {
   overflow-x: hidden; 
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 1rem;
   color: #00f7ff;
   text-shadow: 0 0 12px rgba(0, 247, 255, 0.5);
@@ -243,6 +250,7 @@ function navigateTo(page) {
 .login-box input {
   overflow-x:  hidden;
   width: 100%;
+  box-sizing: border-box;
   padding: 10px 12px;
   margin: 10px 0 20px;
   border: none;
@@ -269,10 +277,12 @@ function navigateTo(page) {
   border-radius: 8px;
   font-size: 1rem;
   width: 100%;
+  box-sizing: border-box;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
   box-shadow: 0 4px 10px rgba(0, 247, 255, 0.3);
-}
+} 
+
 
 .login-box button[type="submit"]:hover {
   background: linear-gradient(135deg, #00d0ff, #006a80);
@@ -402,8 +412,14 @@ function navigateTo(page) {
   -webkit-text-fill-color: transparent;
 }
 
+#title span:first-child {
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: 12px;
+}
+
 #title span:nth-child(2) {
-  font-size: 20px;         /* or any size you want */
+  font-size: 20px;        
 }
 
 
@@ -585,5 +601,36 @@ html, body {
 }
 
 
+@media (min-width: 600px) {
 
+  .login-box {
+    font-size: 1rem;
+  }
+
+  .login-box input,
+  .login-box button[type="submit"] {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+   #title span:first-child {
+    font-size: 42px;
+    letter-spacing: 6px;
+  }
+
+  #title span:nth-child(2) {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  #title span:first-child {
+    font-size: 32px;
+    letter-spacing: 3px;
+  }
+
+  #title span:nth-child(2) {
+    font-size: 14px;
+  }
+}
 </style>
