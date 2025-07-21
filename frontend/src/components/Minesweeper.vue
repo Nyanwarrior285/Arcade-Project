@@ -102,6 +102,8 @@
             alert("Bombed & Dead.\nYou Suck!");
             gameOver.value = true;
             stopTimer();
+            scoreCalculation();
+            console.log(mineScore.value);
             return; 
         }  
           
@@ -185,25 +187,27 @@
     function rightClickFlagging( row, col ) {
         if ( gameOver.value ) return;
 
-
         const currentCell = board.value[row][col];
+        console.log(currentCell.isVisited);
         
         if ( !currentCell.isVisited ) {
             currentCell.isFalged = !currentCell.isFalged;                            // false->true
-        } else if ( !cell.hasBom && cell.isFalged) {
-                    wrongFlags.value++;                    
+        }
+        if ( !currentCell.hasBom && currentCell.isFalged) {
+                    wrongFlags.value++;   
+                    console.log( wrongFlags.value );     
+                    scoreCalculation()
+                    console.log( scoreCalculation() );
+
                 }
         return wrongFlags.value;
-
+        
     }
-
-
-
-
 
 
     function scoreCalculation() {
         const timePenalty = timer.value * 2;
+
         const wrongFlagPennalty = wrongFlags.value * 5;
 
         mineScore.value = baseScore.value - timePenalty - wrongFlagPennalty;
@@ -211,37 +215,18 @@
     }
 
 
-    // function countWrongFlags(boardSize) {
-    //     let count = 0;
-    //     for (let r = 0; r < boardSize; r++) {
-    //         for (let c = 0; c < boardSize; c++ ) {
-    //             const cell = board.value[r][c];
-    //             if ( !cell.hasBom && cell.isFalged) {
-    //                 count++;                    
-    //             }
-    //         }
-    //     }
-    //     return count;
-    // }
-
-
-    // function penalties() {
-
-    // }
-
     function checkWin( boardSize ) {
         for (let r = 0; r < boardSize; r++) {
             for (let c = 0; c < boardSize; c++ ) {
                 const cell = board.value[r][c];
                 if ( !cell.hasBom && !cell.isVisited ) {
                     return false;
-                    
                 }
             }
         }
         stopTimer();
         scoreCalculation();
-
+        
         console.log( scoreCalculation() );
 
         alert("Fine, you win, its just luck~")
@@ -277,7 +262,7 @@
         <p> Time: {{ timer }} s</p>  
         <p class="mine-score"> Final Score: <span v-if="gameOver">{{ mineScore }} </span></p>
 
-        <div v-if"!gameStart">  
+        <div v-if="!gameStart">  
             <input type="number" id="bom-quantity" v-model="numOfBom" min="4" max="20" />
             <button class="enter-numbers-of-boms" @click="restartGame()">Enter # Boms</button>
         </div>
