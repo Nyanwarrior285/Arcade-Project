@@ -71,7 +71,7 @@
                 }
                 board[r][c].neiborsBom = count;
 
-                console.log("#boms: ", numOfBom.value );
+                console.log("#boms: ", numOfBom.value );                // check
             }
         }
     }
@@ -101,6 +101,7 @@
             cell.isVisited = true;
             alert("Bombed & Dead.\nYou Suck!");
             gameOver.value = true;
+            stopTimer();
             return; 
         }  
           

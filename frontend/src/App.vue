@@ -211,6 +211,7 @@ function navigateTo(page) {
 
 
 .login-box {
+  /* display: flex; */
   background: rgba(15, 15, 25, 0.85);
   padding: 2.5rem;
   border-radius: 16px;
@@ -228,7 +229,7 @@ function navigateTo(page) {
 .login-box div {
   overflow-x: hidden;
   text-align: left;
-
+  margin: 0 auto;
 }
 
 .login-box h2 {
@@ -241,7 +242,6 @@ function navigateTo(page) {
 
 .login-box input {
   overflow-x:  hidden;
-
   width: 100%;
   padding: 10px 12px;
   margin: 10px 0 20px;
