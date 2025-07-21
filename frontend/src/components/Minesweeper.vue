@@ -221,16 +221,22 @@
                 const cell = board.value[r][c];
                 if ( !cell.hasBom && !cell.isVisited ) {
                     return false;
-                }
+                } 
+                // if ( !cell.hasBom && cell.isVisited ) {
+                //     return true;
+                // } 
             }
         }
         stopTimer();
+        gameOver.value = true;
+        console.log("check");
         scoreCalculation();
-        
         console.log( scoreCalculation() );
 
         alert("Fine, you win, its just luck~")
+
         return true;
+
     }
 
 
