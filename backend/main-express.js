@@ -61,7 +61,7 @@ userSchema.pre("save", async function (next) {
 // POST /Register: ==================================================================================================================================================================
 app.post( "/register", async(req, res) => {     // yea, this is literally defins the register router.    this sends POST request to /register touter, then backend will use this async function to oprate...receive user data from front ---> check user existence ---> hash ----> save to database ---> 根据设定的条件来 creates a session 
     console.log("req.body = ", req.body );      // 这一行把客户端通过请求体（body）发送过来的数据输出到终端控制台，用于调试。
-    const { email, password } = req.body;       // 如果用户通过注册表单发送了邮箱和密码，这里会显示： req.body = { email: "user@example.com", password: "userpassword" }
+    const { name, email, password } = req.body;       // 如果用户通过注册表单发送了邮箱和密码，这里会显示： req.body = { email: "user@example.com", password: "userpassword" }
 
     if ( !email || !password ) {
         res.status ( 400 ).json({ message: "Email and password required" });
@@ -69,7 +69,7 @@ app.post( "/register", async(req, res) => {     // yea, this is literally defins
     }
 
   // Only reach here if the user doesn't exist 
-    const newUser = new User({ email, password });
+    const newUser = new User({ name, email, password });
     await newUser.save();
 
     res.status(201).json({ message: "User created successfully" });
@@ -91,7 +91,11 @@ app.post("/login", async (req, res) => {
     
     req.session.session_email = user.email;                      // 当用户登录成功后，把这个用户的邮箱保存到 session 中，作为登录状态的标记。
     
-    res.status(200).json({ message: "Login successful" });
+    res.status(200).json({ 
+        message: "Login successful" ,
+        name: user.name,
+        email: user.email
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
