@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from "vue";
+const name = defineProps(["name"]);
+console.log(name);
 
 const direction = ref("east");
 const headPosition = ref({x: 5, y: 7});
@@ -129,8 +131,9 @@ function stopAutoMove() {
 async function loseSnake() {
     loseGame.value = true;
     stopAutoMove();
-    const name = prompt("You got " + score.value + " score! \nWrite your name to submit your score: ");
-    if (name) {
+    console.log(name)
+    const submitScore = confirm("You got " + score.value + " score! \nSubmit score?");
+    if (submitScore) {
         const res = await fetch("http://localhost:3000/scores", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -168,14 +171,14 @@ function newGame() {
 
 <template>
     <div class="snake-container" tabindex="0" v-on:keydown="changeDirection">
-        <strong>Score: {{score}}</strong>
+        <strong style="color: white">Score: {{score}}</strong>
         <div class="snake-col">
             <div v-for="row in board" class="snake-row">
                 <div v-for="cell in row">
-                    <div v-if='cell["type"] == "head"' class="snake-head"></div>
-                    <div v-else-if='cell["type"] == "body"' class="snake-body"></div>
-                    <div v-else-if='cell["type"] == "apple"' class="snake-apple"></div>
-                    <div v-else class="snake-none"></div>
+                    <div v-if='cell["type"] == "head"' class="cell snake-head"></div>
+                    <div v-else-if='cell["type"] == "body"' class="cell snake-body"></div>
+                    <div v-else-if='cell["type"] == "apple"' class="cell snake-apple"></div>
+                    <div v-else class="cell snake-none"></div>
                 </div>
             </div>
         </div>
@@ -186,7 +189,7 @@ function newGame() {
                 <button v-on:click="stopAutoMove" class="button">Stop</button>
             </div>
             <div class="button-container">
-                Speed(ms):
+                <div style="color: white">Speed(ms):</div>
                 <input v-model="speed" type="number" class="input"/>
             </div>
         </div>
@@ -203,8 +206,6 @@ function newGame() {
 .snake-row {
     display: flex;
     flex-direction: row;
-    margin-top: 1px;
-    margin-bottom: 1px;
 }
 .snake-col {
     display: flex;
@@ -212,31 +213,20 @@ function newGame() {
 }
 .snake-apple {
     background-color: red;
-    height: 15px;
-    width: 15px;
-    margin-left: 1px;
-    margin-right: 1px;
 }
 .snake-head {
     background-color: greenyellow;
-    height: 15px;
-    width: 15px;
-    margin-left: 1px;
-    margin-right: 1px;
 }
 .snake-body {
     background-color: green;
-    height: 15px;
-    width: 15px;
-    margin-left: 1px;
-    margin-right: 1px;
 }
 .snake-none {
     background-color: grey;
+}
+.cell {
     height: 15px;
     width: 15px;
-    margin-left: 1px;
-    margin-right: 1px;
+    border: 1px solid #dbd9d9;
 }
 .button-container {
     display: flex;

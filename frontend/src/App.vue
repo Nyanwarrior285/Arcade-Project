@@ -62,8 +62,9 @@ async function handleSubmit() {
         const result = await res.json();
         console.log('Login successful:', result);
         currentUser.value = { name: result.name, email: result.email };
-        activePage.value = 'home';                    // switch to MainPage after login, and after set currentUser.value!!
-
+        name.value = result.username;
+        activePage.value = 'home';                    // switch to MainPage after login
+      
         // TODO: 设置 currentUser、跳转页面等
       }
       else {
@@ -178,7 +179,7 @@ function navigateTo(page) {
     </nav>
 
     <div v-if="activePage === 'home'" title="Hello World"></div>
-    <Snake v-if="activePage === 'snake'" />
+    <Snake v-if="activePage === 'snake'" :name="name"/>
     <Minesweeper v-if="activePage === 'minesweeper' && currentUser.name"
      :player-name="currentUser.name"
     />
