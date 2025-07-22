@@ -1,5 +1,17 @@
 <script setup>
     import { ref } from 'vue';
+    import { onMounted } from 'vue';
+    
+    const props = defineProps({             // Now you can access the player’s name using props.playerName.
+        playerName: {
+            type: String,
+            default:""                      // so it wont show name as "undefined"
+        }
+    });
+
+    onMounted(() => {
+        console.log("🧠 playerName received:", props.playerName);
+    });
 
     const gameStart = ref(false);
     const baseScore = ref(1000);
@@ -104,6 +116,7 @@
             stopTimer();
             scoreCalculation();
             console.log(mineScore.value);
+            recordScoreOption()
             return; 
         }  
           
@@ -232,13 +245,42 @@
         console.log("check");
         scoreCalculation();
         console.log( scoreCalculation() );
-
-        alert("Fine, you win, its just luck~")
+        recordScoreOption()
+        alert( "Fine, you win, its just luck~" )
 
         return true;
 
     }
 
+
+    async function recordScoreOption () {
+        if ( gameOver.value ) {
+           
+            const recording = confirm(
+                props.playerName + ',\nYou got ' + mineScore.value + ' score!\nRecord your score?'
+            );
+            console.log(props.playerName);
+            if (recording) {
+                console.log("playerName from props:", props.playerName);
+                const res = await fetch("http://localhost:3000/scores", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        name: props.playerName,
+                        score: mineScore.value,
+                        game: "mineSweeper"
+                    })
+                });
+                console.log(res);
+                if (res.ok) {
+                    console.log("Your score submitted successfully.");
+                } 
+                if (!res.ok) {
+                    console.error("Oops! ");
+                }
+            };
+        }
+    } 
 
     function restartGame() {
         if ( numOfBom.value >= 4 && numOfBom.value <= 20 ) {
@@ -257,7 +299,7 @@
 
 
 
-    
+
 
 </script>
 

@@ -15,8 +15,8 @@
   const email = ref('');
   const password = ref('');
   const name = ref('');
-  const error = ref("");
-
+  // const error = ref("");
+  const currentUser = ref ({ name:"", email:"" });
 
   // login signup Taggle
   function toggleForm() {                           // toggleForm() 是一个切换登录/注册表单的 function。  
@@ -53,7 +53,7 @@ async function handleSubmit() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           email: email.value, 
-          password: password.value 
+          password: password.value
         }),
         credentials: 'include'
       });
@@ -61,8 +61,9 @@ async function handleSubmit() {
       if (res.ok) {
         const result = await res.json();
         console.log('Login successful:', result);
-        activePage.value = 'home';                    // switch to MainPage after login
-      
+        currentUser.value = { name: result.name, email: result.email };
+        activePage.value = 'home';                    // switch to MainPage after login, and after set currentUser.value!!
+
         // TODO: 设置 currentUser、跳转页面等
       }
       else {
@@ -178,7 +179,9 @@ function navigateTo(page) {
 
     <div v-if="activePage === 'home'" title="Hello World"></div>
     <Snake v-if="activePage === 'snake'" />
-    <Minesweeper v-if="activePage === 'minesweeper'" />
+    <Minesweeper v-if="activePage === 'minesweeper' && currentUser.name"
+     :player-name="currentUser.name"
+    />
 
   </div>
 </template>
