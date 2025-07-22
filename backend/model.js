@@ -54,6 +54,7 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 });
 
+
 const Score = mongoose.model("Score", scoreSchema);
 const User = mongoose.model('User', userSchema);
 
@@ -61,3 +62,5 @@ module.exports = {
     Score: Score,
     User: User
 };
+
+

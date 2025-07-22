@@ -4,6 +4,7 @@ const express = require("express");
 const session = require('express-session');
 const mongoose = require("mongoose");
 const cors = require("cors");
+
 // models: 
 const { Score, User } = require("./model.js");
 
@@ -138,9 +139,6 @@ app.get("/logout", ( req, res ) => {
     console.log(`Server running at http://0.0.0.0:${PORT}`);
     });
 
-    // app.listen(PORT, "0.0.0.0", () => {
-    //     console.log(`Server listening at http://0.0.0.0:"${PORT}`);
-    // });
 };
 
 
