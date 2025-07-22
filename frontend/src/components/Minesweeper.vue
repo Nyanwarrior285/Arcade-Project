@@ -1,16 +1,11 @@
 <script setup>
     import { ref } from 'vue';
-    import { onMounted } from 'vue';
-    
+
     const props = defineProps({             // Now you can access the player’s name using props.playerName.
         playerName: {
             type: String,
             default:""                      // so it wont show name as "undefined"
         }
-    });
-
-    onMounted(() => {
-        console.log("🧠 playerName received:", props.playerName);
     });
 
     const gameStart = ref(false);
