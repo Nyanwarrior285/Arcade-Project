@@ -61,7 +61,7 @@ async function handleSubmit() {
       if (res.ok) {
         const result = await res.json();
         console.log('Login successful:', result);
-        currentUser.value = { name: result.name, email: result.email };
+        currentUser.value = { name: result.username, email: result.email };
         name.value = result.username;
         activePage.value = 'home';                    // switch to MainPage after login
       
@@ -78,7 +78,7 @@ async function handleSubmit() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          name: name.value, 
+          username: name.value, 
           email: email.value, 
           password: password.value 
         }),
