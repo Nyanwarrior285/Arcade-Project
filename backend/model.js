@@ -8,7 +8,7 @@ const scoreSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    userName: {
+    name: {
         type: String,
         default: "",
     },
