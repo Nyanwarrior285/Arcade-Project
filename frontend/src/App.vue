@@ -122,22 +122,22 @@ function navigateTo(page) {
 
 
 <template>
-  <div v-if="activePage === 'login'" class="body-container">
-    <div class="auth-container">
-      <!--line122  如果 isLogin 是 true，就显示 "Login"
-      否则就显示 "Sign Up" -->
-      
-      <div id="stars"></div>
-      <div id="stars2"></div>
-      <div id="stars3"></div>
-
+  <div class="auth-container">
+    <!--line122  如果 isLogin 是 true，就显示 "Login"
+    否则就显示 "Sign Up" -->
+    
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    
+    
+    
+    <div v-if="activePage === 'login'" class="body-container">
       <div id="title">
         <span>THY SHALL HAVE FUN..</span>
         <span>Hopefully...</span>
       </div>
-
-
-
+      
       <div class="login-box">
         <h2>{{ isLogin ? "Login" : "Sign Up" }}</h2>        <!-- 	•	{{ ... }} 是 Vue.js 的插值语法，用于在 HTML 中动态插入变量或表达式的值。 -->
         <form @submit.prevent="handleSubmit" >               <!-- 当表单被“提交”（submit）时，执行 handleSubmit() 这个函数。-->
@@ -166,12 +166,8 @@ function navigateTo(page) {
         </p>
         </div>
       </div>
-  </div>
 
-
-
-
-  <div v-else class="container">
+  <div v-else class="container body-container">
     <button @click="logoutToLogin" class="logout-button">Log out</button>
     <nav class="nav-bar">
       <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
@@ -186,6 +182,7 @@ function navigateTo(page) {
     <Snake v-if="activePage === 'snake'" :name="name"/>
     <Minesweeper v-if="activePage === 'minesweeper' && currentUser.name" :player-name="currentUser.name" />
 
+    </div>
   </div>
 </template>
 
@@ -232,9 +229,9 @@ function navigateTo(page) {
   width: 100%;
   box-sizing: border-box;
   margin: 0 auto;
+  margin-top: 2.5rem;
   animation: fadeIn 1.2s ease-out;
   z-index: 2;
-
 } 
 
 .login-box div {
@@ -327,6 +324,10 @@ function navigateTo(page) {
   width: 100%;
   background-color: #242631; /* match your .container */
   font-family: 'Lato', sans-serif;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
 }
 
 #stars, #starts2,#stars3 {
@@ -398,10 +399,10 @@ function navigateTo(page) {
 
 /* TITLE TEXT */
 #title {
-  position: absolute;
-  top: 15%;
+  /* position: absolute; */
+  /* top: 15%;
   left: 0;
-  right: 0;
+  right: 0; */
   text-align: center;
   color: white;
   font-size: 50px;
