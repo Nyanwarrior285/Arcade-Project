@@ -45,10 +45,13 @@
 <style scoped>
   .leader-board {
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     box-shadow: 0 0 10px cyan;
     color: white;
-    font-family: Arial, sans-serif;
-}   
+    font-family: Arial, sans-serif; 
+    }
+
+
+
 </style>

@@ -123,14 +123,13 @@ function navigateTo(page) {
 
 <template>
   <div class="auth-container">
-    <!--line122  如果 isLogin 是 true，就显示 "Login"
-    否则就显示 "Sign Up" -->
     
     <div id="stars"></div>
     <div id="stars2"></div>
     <div id="stars3"></div>
-    
-    
+    <div id="stars4"></div>
+    <div id="stars5"></div>
+    <div id="stars6"></div>
     
     <div v-if="activePage === 'login'" class="body-container">
       <div id="title">
@@ -167,7 +166,7 @@ function navigateTo(page) {
         </div>
       </div>
 
-  <div v-else class="container body-container">
+  <div v-else class="body-container">
     <button @click="logoutToLogin" class="logout-button">Log out</button>
     <nav class="nav-bar">
       <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
@@ -195,25 +194,23 @@ function navigateTo(page) {
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 100%;
   max-width: 100%;
   height: 100vh;
 
-  padding: 1rem;
-  padding-top: 10vh;         
   box-sizing: border-box;
 }
-
+/* 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 100%;
   background-color: #242631;
   box-sizing: border-box;
-}
+} */
 
 .login-box {
 
@@ -319,10 +316,8 @@ function navigateTo(page) {
   margin: 0;
   padding: 0;
   background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-  overflow:hidden;
   height: 100vh;
   width: 100%;
-  background-color: #242631; /* match your .container */
   font-family: 'Lato', sans-serif;
   display: flex;
   flex-flow: column nowrap;
@@ -330,7 +325,7 @@ function navigateTo(page) {
   justify-content: center;
 }
 
-#stars, #starts2,#stars3 {
+#stars, #starts2, #stars3, #starts4, #starts5, #starts6 {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -391,6 +386,26 @@ function navigateTo(page) {
   background: transparent;
   box-shadow: inherit;
 }
+
+#stars4 {
+  width: 4px;
+  height: 4px;
+  box-shadow:
+    200px 300px #888, 800px 1200px #888, 1500px 600px #888,
+    700px 700px #888, 300px 1500px #888;
+  animation: animStar 150s linear infinite;
+}
+
+#stars4::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 4px;
+  height: 4px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
 
 @keyframes animStar {
   from { transform: translateY(0); }
@@ -577,46 +592,50 @@ html, body {
 }
 /* Home */
 .nav-button {
-  background: linear-gradient(135deg, #4CAF50, #2E7D32);
-  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+  background: linear-gradient(135deg, #00c896, #007f5f);
+  box-shadow: 0 6px 14px rgba(0, 200, 150, 0.6);
+  color: white;
 }
 .nav-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(76, 175, 80, 0.5);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 200, 150, 0.3);
 }
 
 
-.leader-board-button{
-  background: linear-gradient(135deg, #2196F3, #0D47A1);
-  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+.leader-board-button {
+  background: linear-gradient(135deg, #ffba08, #ff6f00);
+  box-shadow: 0 6px 14px rgba(255, 186, 8, 0.6);
+  color: white;
 }
-
 .leader-board-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(33, 150, 243, 0.5);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(255, 186, 8, 0.3);
 }
 
 /* Snake */
 .snake-button {
-  background: linear-gradient(135deg, #2196F3, #0D47A1);
-  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+  background: linear-gradient(135deg, #f78ed0, #b44fff);
+  box-shadow: 0 6px 14px rgba(247, 142, 208, 0.6);
+  color: white;
 }
+
 .snake-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(33, 150, 243, 0.5);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(247, 142, 208, 0.3);
 }
 
 /* Minesweeper */
 .minesweeper-button {
-  background: linear-gradient(135deg, #f6400e, #86681c); 
+  background: linear-gradient(135deg, #00f7ff, #007d94);
+  box-shadow: 0 6px 14px rgba(0, 247, 255, 0.6);
   color:white;
-  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
 }
 
 .minesweeper-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(255, 193, 7, 0.5);
-}
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 247, 255, 0.3);
+} 
+
 
 
 @media (min-width: 600px) {
