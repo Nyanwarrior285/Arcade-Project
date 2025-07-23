@@ -23,12 +23,10 @@
 <template>
     <div class="leader-board">
         
-        <p>data loaed ????????????????</p>
-
-        <h1>All Games</h1>               <!-- App.vue: <LeaderBoard :game="'snake'" /> 来 define 哪个 game name--> 
+        <h1>All Games Sore</h1>               <!-- App.vue: <LeaderBoard :game="'snake'" /> 来 define 哪个 game name--> 
         <ul>
             <li v-for="score in scores" :key="score._id">             <!--    dont forget the space before :key -->
-                {{ score.userName }}, {{ score.name }}, {{ score.score }}
+                 {{ score.game }}, {{ score.name }}, {{ score.score }}
             </li>
         </ul>
     </div>

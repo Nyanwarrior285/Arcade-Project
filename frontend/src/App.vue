@@ -182,7 +182,7 @@ function navigateTo(page) {
     </nav>
 
     <div v-if="activePage === 'home'" title="Hello World"></div>
-    <LeaderBoard v-if="activePage === 'leaderBoard'" />
+    <LeaderBoard v-if="activePage === 'leaderBoard'" />             <!-- ok, the leaderBoard here needs to match line 178, navigateTo('leaderBoard'). Remember!!!!!!!!!!!!!!-->
     <Snake v-if="activePage === 'snake'" :name="name"/>
     <Minesweeper v-if="activePage === 'minesweeper' && currentUser.name" :player-name="currentUser.name" />
 
