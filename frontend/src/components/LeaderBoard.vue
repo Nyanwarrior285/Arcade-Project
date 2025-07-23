@@ -2,12 +2,7 @@
     import { ref, onMounted } from 'vue';
 
     const scores = ref([]);     // 创建这个 ref 变量来储存 fetch 来的 data. yaa. score
-    // const props = defineProps ({
-    //     game: {
-    //         type:String,
-    //         required: true
-    //     }
-    // });
+    
 
 // fetch score based on the game nmae, from backend
 // 把从服务器获得的排行榜数据保存下来，供页面显示。 need to go poo.
@@ -15,8 +10,15 @@
         const res = await fetch (`http://localhost:3000/scores/`);  
         scores.value = await res.json();            // 把后端返回的数据（JSON 格式）解析出来，赋值给响应式变量 scores
     }
-    onMounted(fetchAllScores);
-
+        // refresh every 10 min.
+        let showAllScoreRenewInterval;
+        onMounted(() => {
+            fetchAllScores();
+            showAllScoreRenewInterval = setInterval(fetchAllScores, 600000);  // 600,000 ms = 10 min
+        });
+        onBeforeUnmount (() => {
+            clearInterval(showAllScoreRenewInterval);
+        });
 </script>
 
 

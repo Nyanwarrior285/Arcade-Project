@@ -104,12 +104,12 @@ app.get("/logout", ( req, res ) => {
 
 // ======================================================== Score ===============================================================
     app.get("/scores", async (req,res) => {
-        const result = await Score.find({});
+        const result = await Score.find({}).limit(10);
         res.json(result);
     });
 
     app.get("/scores/game/:gameName", async (req,res) => {
-        const result = await Score.find({game: req.params.gameName}).sort({score: -1})
+        const result = await Score.find({game: req.params.gameName}).sort({score: -1});
         res.json(result);
     });
 
