@@ -4,9 +4,10 @@
   import { ref } from "vue";
   import Snake from "./components/Snake.vue";
   import Minesweeper from "./components/Minesweeper.vue";
+  import LeaderBoard from "./components/LeaderBoard.vue";
 
   const activePage = ref("login");
-
+  // const showAllScore = ref(false);             // set it to a tagle,
 
 
   // ref() 是 Vue 的响应式函数，意味着这些变量的值可以实时更新，界面也会自动变化。
@@ -174,15 +175,16 @@ function navigateTo(page) {
     <button @click="logoutToLogin" class="logout-button">Log out</button>
     <nav class="nav-bar">
       <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
+      <a href="#" @click.prevent="navigateTo('leaderBoard')" class="leader-board-button">Leader Board</a>
       <a href="#" @click.prevent="navigateTo('snake')" class="snake-button">Snake</a>
-      <a href="#" @click.prevent="navigateTo('minesweeper')" class="minesweeper-button">MineSweeper</a>
+      <a href="#" @click.prevent="navigateTo('minesweeper')" class="minesweeper-button">Minesweeper</a>
+      
     </nav>
 
     <div v-if="activePage === 'home'" title="Hello World"></div>
+    <LeaderBoard v-if="activePage === 'leaderBoard'" />
     <Snake v-if="activePage === 'snake'" :name="name"/>
-    <Minesweeper v-if="activePage === 'minesweeper' && currentUser.name"
-     :player-name="currentUser.name"
-    />
+    <Minesweeper v-if="activePage === 'minesweeper' && currentUser.name" :player-name="currentUser.name" />
 
   </div>
 </template>
@@ -211,7 +213,7 @@ function navigateTo(page) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 95vh;
+  height: 100vh;
   background-color: #242631;
   box-sizing: border-box;
 }
@@ -544,7 +546,8 @@ html, body {
 
 .nav-button,
 .snake-button,
-.minesweeper-button {
+.minesweeper-button,
+.leader-board-button {
   width: 240px;
   padding: 12px 20px;
   font-size: 16px;
@@ -581,6 +584,17 @@ html, body {
   box-shadow: 0 6px 12px rgba(76, 175, 80, 0.5);
 }
 
+
+.leader-board-button{
+  background: linear-gradient(135deg, #2196F3, #0D47A1);
+  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.leader-board-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(33, 150, 243, 0.5);
+}
+
 /* Snake */
 .snake-button {
   background: linear-gradient(135deg, #2196F3, #0D47A1);
@@ -593,8 +607,8 @@ html, body {
 
 /* Minesweeper */
 .minesweeper-button {
-  background: linear-gradient(135deg, #FFEB3B, #FBC02D); 
-  color: #333;
+  background: linear-gradient(135deg, #f6400e, #86681c); 
+  color:white;
   box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
 }
 
