@@ -108,6 +108,11 @@ app.get("/logout", ( req, res ) => {
         res.json(result);
     });
 
+    app.get("/scores/user/:email", async (req,res) => {
+        const result = await Score.find({email: req.params.email});
+        res.json(result);
+    })
+
     app.get("/scores/game/:gameName", async (req,res) => {
         const result = await Score.find({game: req.params.gameName}).sort({score: -1});
         res.json(result);
