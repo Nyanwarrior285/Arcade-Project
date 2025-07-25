@@ -168,6 +168,7 @@ function navigateTo(page) {
 
   <div v-else class="body-container">
     <button @click="logoutToLogin" class="logout-button">Log out</button>
+    <button class="user-button">Hello {{ name }}</button>
     <nav class="nav-bar">
       <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
       <a href="#" @click.prevent="navigateTo('leaderBoard')" class="leader-board-button">Leader Board</a>
@@ -176,7 +177,7 @@ function navigateTo(page) {
       
     </nav>
 
-    <div v-if="activePage === 'home'" title="Hello World">
+    <div v-if="activePage === 'home'" title="Hello World" >
       <p> To be continued ...</p>
     </div>
     <LeaderBoard v-if="activePage === 'leaderBoard'" />             <!-- ok, the leaderBoard here needs to match line 178, navigateTo('leaderBoard'). Remember!!!!!!!!!!!!!!-->
@@ -517,6 +518,9 @@ html, body {
   
 }
 
+
+
+
 .nav-button,
 .snake-button,
 .minesweeper-button,
@@ -533,20 +537,37 @@ html, body {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.user-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 16px;
+  border: none;
+  background: #3ce764;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 .logout-button {
   position: absolute;
   top: 20px;
   right: 20px;
   padding: 8px 16px;
   border: none;
-  background: #e74c3c;
+  background:#e74c3c;
   color: white;
+  font-weight: bold;
+
   border-radius: 8px;
   cursor: pointer;
 }
 .logout-button:hover {
   background: #c0392b;
 }
+
+
 /* Home */
 .nav-button {
   background: linear-gradient(135deg, #00c896, #007f5f);
