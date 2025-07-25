@@ -180,8 +180,8 @@ function navigateTo(page) {
       <p> To be continued ...</p>
     </div>
     <LeaderBoard v-if="activePage === 'leaderBoard'" />             <!-- ok, the leaderBoard here needs to match line 178, navigateTo('leaderBoard'). Remember!!!!!!!!!!!!!!-->
-    <Snake v-if="activePage === 'snake'" :name="name"/>
-    <MineSweeper v-if="activePage === 'minesweeper' && currentUser.name" :player-name="currentUser.name" />
+    <Snake v-if="activePage === 'snake'" :name="currentUser.name" :email="currentUser.email"/>
+    <MineSweeper v-if="activePage === 'minesweeper'" :name="currentUser.name" :email="currentUser.email"/>
 
     </div>
   </div>

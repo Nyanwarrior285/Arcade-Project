@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
-const name = defineProps(["name"]);
-console.log(name);
+const user = defineProps(["name", "email"]);
+console.log(user);
 
 const direction = ref("east");
 const headPosition = ref({x: 5, y: 7});
@@ -131,14 +131,15 @@ function stopAutoMove() {
 async function loseSnake() {
     loseGame.value = true;
     stopAutoMove();
-    console.log(name)
+    console.log(user)
     const submitScore = confirm("You got " + score.value + " score! \nSubmit score?");
     if (submitScore) {
         const res = await fetch("http://localhost:3000/scores", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                name: name,
+                name: user.name,
+                email: user.email,
                 score: score.value,
                 game: "snake"
             })
