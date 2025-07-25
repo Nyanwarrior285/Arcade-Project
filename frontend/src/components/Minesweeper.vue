@@ -1,12 +1,7 @@
 <script setup>
     import { ref } from 'vue';
 
-    const props = defineProps({             // Now you can access the player’s name using props.playerName.
-        playerName: {
-            type: String,
-            default:""                      // so it wont show name as "undefined"
-        }
-    });
+    const props = defineProps(["name","email"]);
 
     const gameStart = ref(false);
     const baseScore = ref(1000);
@@ -252,16 +247,17 @@
         if ( gameOver.value ) {
            
             const recording = confirm(
-                props.playerName + ',\nYou got ' + mineScore.value + ' score!\nRecord your score?'
+                props.name + ',\nYou got ' + mineScore.value + ' score!\nRecord your score?'
             );
-            console.log(props.playerName);
+            console.log(props.name);
             if (recording) {
-                console.log("playerName from props:", props.playerName);
+                console.log("playerName from props:", props.name);
                 const res = await fetch("http://localhost:3000/scores", {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({
-                        name: props.playerName,
+                        name: props.name,
+                        email: props.email,
                         score: mineScore.value,
                         game: "mineSweeper"
                     })

@@ -27,15 +27,16 @@
 <template>
     <div class="leader-board">
         
-        <h1>All Games Score</h1>
+        <h1 style="justify-self: center;">Game's Score</h1>
         <div class="games">
             <div v-for="game, gameName in scores">
-                {{gameName}}
-                <ul class="scores">
-                    <li v-for="score in game">
+                <div class="scores">
+                    <strong>{{gameName}}</strong>
+                    <br>
+                    <div v-for="score in game">
                         {{score.name}}: {{score.score}}
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -61,6 +62,7 @@
 .games {
     display: flex;
     flex-direction: row;
+    gap: 20px;
 }
 .scores {
     display: flex;
