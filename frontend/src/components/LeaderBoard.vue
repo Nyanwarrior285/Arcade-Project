@@ -8,9 +8,9 @@
 // 把从服务器获得的排行榜数据保存下来，供页面显示。 need to go poo.
     async function fetchAllScores () {                 
         const snake = await fetch (`http://localhost:3000/scores/game/snake`);  
-        scores.value.snake = await snake.json();            // 把后端返回的数据（JSON 格式）解析出来，赋值给响应式变量 scores
+        scores.value.Snake = await snake.json();            // 把后端返回的数据（JSON 格式）解析出来，赋值给响应式变量 scores
         const minesweeper = await fetch ("http://localhost:3000/scores/game/mineSweeper");
-        scores.value.minesweeper = await minesweeper.json();
+        scores.value.MineSweeper = await minesweeper.json();
     }
         // refresh every 10 min.
     let showAllScoreRenewInterval;
