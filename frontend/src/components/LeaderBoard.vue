@@ -16,7 +16,7 @@
     let showAllScoreRenewInterval;
     onMounted(() => {
         fetchAllScores();
-        showAllScoreRenewInterval = setInterval(fetchAllScores, 600000);  // 600,000 ms = 10 min
+        showAllScoreRenewInterval = setInterval(fetchAllScores, 60000);  // 600,000 ms = 10 min
     });
     onBeforeUnmount (() => {
         clearInterval(showAllScoreRenewInterval);
