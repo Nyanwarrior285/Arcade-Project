@@ -151,6 +151,7 @@ async function loseSnake() {
 
 function newGame() {
     loseGame.value = false;
+    stopAutoMove();
     applePosition.value = {x: 20, y: 7};
     headPosition.value = {x: 5, y: 7};
     bodyPosition.value = [];
