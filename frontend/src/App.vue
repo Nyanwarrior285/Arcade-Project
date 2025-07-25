@@ -5,7 +5,6 @@
   import Snake from "./components/Snake.vue";
   import Minesweeper from "./components/Minesweeper.vue";
   import LeaderBoard from "./components/LeaderBoard.vue";
-
   const activePage = ref("login");
   // const showAllScore = ref(false);             // set it to a tagle,
 
@@ -130,7 +129,8 @@ function navigateTo(page) {
     <div id="stars4"></div>
     <div id="stars5"></div>
     <div id="stars6"></div>
-    
+    <!-- <div img src="/screaming-chicken.png" alt="Screaming Chicken" ></div> -->
+  
     <div v-if="activePage === 'login'" class="body-container">
       <div id="title">
         <span>THY SHALL HAVE FUN..</span>
@@ -189,16 +189,13 @@ function navigateTo(page) {
 
 <style scoped>
 
-
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 100%;
   height: 100vh;
-
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 }
 /* 
 .container {
@@ -325,12 +322,13 @@ function navigateTo(page) {
   justify-content: center;
 }
 
-#stars, #starts2, #stars3, #starts4, #starts5, #starts6 {
+#stars, #stars2, #stars3, #stars4, #stars5, #stars6 {
   position: absolute;
   width: 1px;
   height: 1px;
   background: transparent;
 }
+
 
 #stars {
   box-shadow: 
@@ -393,7 +391,7 @@ function navigateTo(page) {
   box-shadow:
     200px 300px #888, 800px 1200px #888, 1500px 600px #888,
     700px 700px #888, 300px 1500px #888;
-  animation: animStar 150s linear infinite;
+  animation: animStar 200s linear infinite;
 }
 
 #stars4::after {
@@ -405,6 +403,56 @@ function navigateTo(page) {
   background: transparent;
   box-shadow: inherit;
 }
+
+#stars5 {
+  width: 2px;
+  height: 2px;
+  box-shadow:
+    200px 300px #888, 800px 1200px #888, 1500px 600px #888,
+    700px 700px #888, 300px 1500px #888;
+  animation: animStar 250s linear infinite;
+}
+
+#stars5::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
+#stars6 {
+  width: 3px;
+  height: 3px;
+  box-shadow:
+    200px 300px #888, 800px 1200px #888, 1500px 600px #888,
+    700px 700px #888, 300px 1500px #888;
+  animation: animStar 300s linear infinite;
+}
+
+#stars6::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: inherit;
+}
+
+/* #chicken{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-image:url('/screaming-chicken.png');
+  top: 1200px;
+  left: 600px;
+  background-size: cover;
+  animation: animStar 150s linear infinite;
+
+} */
 
 
 @keyframes animStar {
@@ -453,103 +501,10 @@ html, body {
   overflow: hidden;
 }
 
-/* Layer 1 - Small Stars */
-#stars {
-  width: 1px;
-  height: 1px;
-  background: transparent;
-  position: absolute;
-  box-shadow: 
-    500px 800px #fff,
-    1200px 700px #fff,
-    300px 1000px #fff,
-    900px 300px #fff,
-    700px 600px #fff,
-    200px 1200px #fff,
-    400px 150px #fff,
-    1500px 900px #fff,
-    1800px 400px #fff,
-    50px 300px #fff; /* just a sample — repeat for more stars */
-  animation: animStar 50s linear infinite;
-}
 
-#stars::after {
-  content: " ";
-  position: absolute;
-  top: 2000px;
-  width: 1px;
-  height: 1px;
-  background: transparent;
-  box-shadow: inherit;
-}
-
-/* Layer 2 - Medium Stars */
-#stars2 {
-  width: 2px;
-  height: 2px;
-  background: transparent;
-  position: absolute;
-  box-shadow: 
-    600px 900px #ccc,
-    1300px 600px #ccc,
-    800px 1100px #ccc,
-    1100px 200px #ccc,
-    300px 500px #ccc;
-  animation: animStar 100s linear infinite;
-}
-
-#stars2::after {
-  content: " ";
-  position: absolute;
-  top: 2000px;
-  width: 2px;
-  height: 2px;
-  background: transparent;
-  box-shadow: inherit;
-}
-
-/* Layer 3 - Big Stars */
-#stars3 {
-  width: 3px;
-  height: 3px;
-  background: transparent;
-  position: absolute;
-  box-shadow: 
-    700px 1000px #888,
-    1500px 500px #888,
-    400px 1300px #888,
-    100px 800px #888,
-    900px 200px #888;
-  animation: animStar 150s linear infinite;
-}
-
-#stars3::after {
-  content: " ";
-  position: absolute;
-  top: 2000px;
-  width: 3px;
-  height: 3px;
-  background: transparent;
-  box-shadow: inherit;
-}
-
-/* Star animation keyframes */
-@keyframes animStar {
-  from {
-    transform: translateY(0px);
-  }
-  to {
-    transform: translateY(-2000px);
-  }
-}
 
 
 /* ======================================================================================================================== */
-
-
-/* body {
-  overflow: hidden;
-} */
 
 .nav-bar {
   display: flex;
@@ -670,4 +625,5 @@ html, body {
     font-size: 14px;
   }
 }
+
 </style>
