@@ -3,7 +3,7 @@
   const BASE_URL = 'http://localhost:3000';
   import { ref } from "vue";
   import Snake from "./components/Snake.vue";
-  import Minesweeper from "./components/Minesweeper.vue";
+  import MineSweeper from "./components/MineSweeper.vue";
   import LeaderBoard from "./components/LeaderBoard.vue";
   const activePage = ref("login");
   // const showAllScore = ref(false);             // set it to a tagle,
@@ -172,14 +172,14 @@ function navigateTo(page) {
       <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
       <a href="#" @click.prevent="navigateTo('leaderBoard')" class="leader-board-button">Leader Board</a>
       <a href="#" @click.prevent="navigateTo('snake')" class="snake-button">Snake</a>
-      <a href="#" @click.prevent="navigateTo('minesweeper')" class="minesweeper-button">Minesweeper</a>
+      <a href="#" @click.prevent="navigateTo('minesweeper')" class="minesweeper-button">MineSweeper</a>
       
     </nav>
 
     <div v-if="activePage === 'home'" title="Hello World"></div>
     <LeaderBoard v-if="activePage === 'leaderBoard'" />             <!-- ok, the leaderBoard here needs to match line 178, navigateTo('leaderBoard'). Remember!!!!!!!!!!!!!!-->
     <Snake v-if="activePage === 'snake'" :name="name"/>
-    <Minesweeper v-if="activePage === 'minesweeper' && currentUser.name" :player-name="currentUser.name" />
+    <MineSweeper v-if="activePage === 'minesweeper' && currentUser.name" :player-name="currentUser.name" />
 
     </div>
   </div>

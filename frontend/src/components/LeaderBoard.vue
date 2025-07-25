@@ -1,14 +1,16 @@
 <script setup>
     import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-    const scores = ref([]);     // 创建这个 ref 变量来储存 fetch 来的 data. yaa. score
+    const scores = ref({});     // 创建这个 ref 变量来储存 fetch 来的 data. yaa. score
     
 
 // fetch score based on the game nmae, from backend
 // 把从服务器获得的排行榜数据保存下来，供页面显示。 need to go poo.
     async function fetchAllScores () {                 
-        const res = await fetch (`http://localhost:3000/scores/`);  
-        scores.value = await res.json();            // 把后端返回的数据（JSON 格式）解析出来，赋值给响应式变量 scores
+        const snake = await fetch (`http://localhost:3000/scores/game/snake`);  
+        scores.value.snake = await snake.json();            // 把后端返回的数据（JSON 格式）解析出来，赋值给响应式变量 scores
+        const minesweeper = await fetch ("http://localhost:3000/scores/game/mineSweeper");
+        scores.value.minesweeper = await minesweeper.json();
     }
         // refresh every 10 min.
     let showAllScoreRenewInterval;
@@ -25,12 +27,17 @@
 <template>
     <div class="leader-board">
         
-        <h1>All Games Sore</h1>               <!-- App.vue: <LeaderBoard :game="'snake'" /> 来 define 哪个 game name--> 
-        <ul>
-            <li v-for="score in scores" :key="score._id">             <!--    dont forget the space before :key -->
-                 {{ score.game }}, {{ score.name }}, {{ score.score }}
-            </li>
-        </ul>
+        <h1>All Games Score</h1>
+        <div class="games">
+            <div v-for="game, gameName in scores">
+                {{gameName}}
+                <ul class="scores">
+                    <li v-for="score in game">
+                        {{score.name}}: {{score.score}}
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 
 </template>
@@ -43,15 +50,20 @@
 
 
 <style scoped>
-  .leader-board {
+.leader-board {
     padding: 1rem;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     box-shadow: 0 0 10px cyan;
     color: white;
     font-family: Arial, sans-serif; 
-    }
-
-
-
+}
+.games {
+    display: flex;
+    flex-direction: row;
+}
+.scores {
+    display: flex;
+    flex-direction: column;
+}
 </style>
