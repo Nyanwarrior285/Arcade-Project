@@ -3,7 +3,7 @@
   const BASE_URL = 'http://localhost:3000';
   import { ref } from "vue";
   import Snake from "./components/Snake.vue";
-  import MineSweeper from "./components/MineSweeper.vue";
+  import MineSweeper from "./components/Minesweeper.vue";
   import LeaderBoard from "./components/LeaderBoard.vue";
   const activePage = ref("login");
   // const showAllScore = ref(false);             // set it to a tagle,
@@ -176,7 +176,9 @@ function navigateTo(page) {
       
     </nav>
 
-    <div v-if="activePage === 'home'" title="Hello World"></div>
+    <div v-if="activePage === 'home'" title="Hello World">
+      <p> To be continued ...</p>
+    </div>
     <LeaderBoard v-if="activePage === 'leaderBoard'" />             <!-- ok, the leaderBoard here needs to match line 178, navigateTo('leaderBoard'). Remember!!!!!!!!!!!!!!-->
     <Snake v-if="activePage === 'snake'" :name="name"/>
     <MineSweeper v-if="activePage === 'minesweeper' && currentUser.name" :player-name="currentUser.name" />
