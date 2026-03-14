@@ -137,7 +137,18 @@ app.get("/logout", ( req, res ) => {
         }
     });
 
-
+    // app.patch("/scores", async (req,res) => {
+    //     const result = await Score.find({email: undefined});
+    //     for (let i = 0; i < result.length; i++) {
+    //         const user = await User.find({username: result[i].name});
+    //         if (user[0]) {
+    //             result[i].email = user[0].email;
+    //         }
+    //     }
+    //     result.splice(2,1);
+    //     await result.save();
+    //     res.json(result);
+    // })
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, "0.0.0.0", () => {

@@ -163,27 +163,27 @@ function navigateTo(page) {
           {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
           <button @click="toggleForm">{{ isLogin ? "Sign Up" : "Login" }}</button>
         </p>
-        </div>
       </div>
-
-  <div v-else class="body-container">
-    <button @click="logoutToLogin" class="logout-button">Log out</button>
-    <button class="user-button">Hello {{ name }}</button>
-    <nav class="nav-bar">
-      <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
-      <a href="#" @click.prevent="navigateTo('leaderBoard')" class="leader-board-button">Leader Board</a>
-      <a href="#" @click.prevent="navigateTo('snake')" class="snake-button">Snake</a>
-      <a href="#" @click.prevent="navigateTo('minesweeper')" class="minesweeper-button">MineSweeper</a>
-      
-    </nav>
-
-    <div v-if="activePage === 'home'" title="Hello World" >
-      <p> To be continued ...</p>
     </div>
-    <LeaderBoard v-if="activePage === 'leaderBoard'" />             <!-- ok, the leaderBoard here needs to match line 178, navigateTo('leaderBoard'). Remember!!!!!!!!!!!!!!-->
-    <Snake v-if="activePage === 'snake'" :name="currentUser.name" :email="currentUser.email"/>
-    <MineSweeper v-if="activePage === 'minesweeper'" :name="currentUser.name" :email="currentUser.email"/>
 
+    <div v-else class="body-container">
+      <button @click="logoutToLogin" class="logout-button">Log out</button>
+      <button class="user-button">Hello {{ name }}</button>
+      <nav class="nav-bar">
+        <a href="#" @click.prevent="navigateTo('home')" class="nav-button">Home</a>
+        <a href="#" @click.prevent="navigateTo('leaderBoard')" class="leader-board-button">Leader Board</a>
+        <a href="#" @click.prevent="navigateTo('snake')" class="snake-button">Snake</a>
+        <a href="#" @click.prevent="navigateTo('minesweeper')" class="minesweeper-button">MineSweeper</a>
+        
+      </nav>
+
+      <div v-if="activePage === 'home'" title="Hello World" >
+        <p> To be continued ...</p>
+      </div>
+      <LeaderBoard v-if="activePage === 'leaderBoard'" />             <!-- ok, the leaderBoard here needs to match line 178, navigateTo('leaderBoard'). Remember!!!!!!!!!!!!!!-->
+      <Snake v-if="activePage === 'snake'" :name="currentUser.name" :email="currentUser.email"/>
+      <MineSweeper v-if="activePage === 'minesweeper'" :name="currentUser.name" :email="currentUser.email"/>
+      <br>
     </div>
   </div>
 </template>
@@ -198,6 +198,7 @@ function navigateTo(page) {
   align-items: center;
   width: 100%;
   height: 100vh;
+  overflow: auto;
   /* box-sizing: border-box; */
 }
 /* 
@@ -320,9 +321,9 @@ function navigateTo(page) {
   width: 100%;
   font-family: 'Lato', sans-serif;
   display: flex;
-  flex-flow: column nowrap;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  overflow: auto;
 }
 
 #stars, #stars2, #stars3, #stars4, #stars5, #stars6 {
@@ -497,7 +498,6 @@ function navigateTo(page) {
 
 /* Background */
 html, body {
-  overflow: hidden;
   height: 100%;
   margin: 0;
   background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
@@ -513,6 +513,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 20px;
   margin-bottom: 20px;
   justify-content: center;
   
